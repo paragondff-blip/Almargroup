@@ -28,6 +28,7 @@ import AdminCareers from "./pages/admin/Careers";
 import AdminCoupons from "./pages/admin/Coupons";
 import AdminNews from "./pages/admin/News";
 import AdminFooterSettings from "./pages/admin/FooterSettings";
+import AdminInquiries from "./pages/admin/Inquiries";
 import { useEffect } from "react";
 
 export default function App() {
@@ -82,6 +83,7 @@ export default function App() {
           <Route path="coupons" element={<AdminCoupons />} />
           <Route path="footer" element={<AdminFooterSettings />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="inquiries" element={<AdminInquiries />} />
         </Route>
       </Routes>
       </BrowserRouter>

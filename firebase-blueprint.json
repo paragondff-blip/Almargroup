@@ -100,6 +100,35 @@
             "heroTitle": { "type": "string" },
             "heroSubtitle": { "type": "string" }
         }
+    },
+    "Contact": {
+        "title": "Contact",
+        "description": "Information form contact message submission",
+        "type": "object",
+        "properties": {
+            "name": { "type": "string" },
+            "address": { "type": "string" },
+            "mobile": { "type": "string" },
+            "email": { "type": "string" },
+            "description": { "type": "string" },
+            "attachmentName": { "type": "string" }
+        }
+    },
+    "State": {
+        "title": "GlobalState",
+        "description": "Aggregated application configurations state",
+        "type": "object",
+        "properties": {
+            "products": { "type": "array" },
+            "news": { "type": "array" },
+            "jobs": { "type": "array" },
+            "orders": { "type": "array" },
+            "brands": { "type": "array" },
+            "coupons": { "type": "array" },
+            "activities": { "type": "array" },
+            "footerData": { "type": "object" },
+            "settings": { "type": "object" }
+        }
     }
   },
   "firestore": {
@@ -111,6 +140,8 @@
     "coupons": { "schema": "Coupon", "description": "Discount coupons" },
     "activities": { "schema": "Activity", "description": "Corporate activities" },
     "footer": { "schema": "Footer", "description": "Footer content" },
-    "settings": { "schema": "Settings", "description": "App settings" }
+    "settings": { "schema": "Settings", "description": "App settings" },
+    "contacts": { "schema": "Contact", "description": "User message submissions" },
+    "states": { "schema": "State", "description": "Saved global system configurations" }
   }
 }

@@ -3,6 +3,9 @@ import path from "path";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import fs from "fs";
+import { initializeApp, cert } from "firebase-admin/app";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -13,6 +16,37 @@ async function startServer() {
   const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
   app.use(express.json());
+
+  // --- Firebase Firestore Admin Core Setup ---
+  let db: any = null;
+  try {
+    let firebaseConfig: any = {};
+    const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+    if (fs.existsSync(configPath)) {
+      firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    }
+    
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      try {
+        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+        initializeApp({
+          credential: cert(serviceAccount)
+        });
+        db = getFirestore();
+        console.log("✅ Successfully initialized Firebase Admin with explicit service account");
+      } catch (e) {
+        console.error("❌ Error parsing FIREBASE_SERVICE_ACCOUNT env:", e);
+      }
+    } else if (firebaseConfig.projectId) {
+      initializeApp({
+        projectId: firebaseConfig.projectId
+      });
+      db = getFirestore();
+      console.log("✅ Successfully initialized Firebase Admin Firestore (ADC):", firebaseConfig.firestoreDatabaseId || "default");
+    }
+  } catch (error) {
+    console.error("⚠️ Error initializing Firebase Admin Firestore:", error);
+  }
 
   // --- MongoDB Connection Optional Setup ---
   let isMongoConnected = false;
@@ -27,7 +61,7 @@ async function startServer() {
       // We do not throw error here to prevent app crash
     }
   } else {
-    console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory data store.");
+    console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory/Firestore data store.");
   }
 
   // Define Mongoose Schema for persistent data
@@ -97,6 +131,8 @@ async function startServer() {
     { id: "1", title: "Global Expansion Strategy", category: "Sales & Marketing", date: "2026-06-01", description: "Driving global reach through strategic market penetration.", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
     { id: "2", title: "Sustainability Initiative Q3", category: "Promotion", date: "2026-05-20", description: "Building strong brand equity through sustainability initiatives.", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
   ];
+
+  let contacts: any[] = [];
 
   let footerData = {
     aboutText: "Empowering global growth through innovative solutions and enterprise management across multifaceted industries.",
@@ -171,8 +207,48 @@ async function startServer() {
     ]
   };
 
-  // Load state from MongoDB if connected, otherwise fallback to local db.json
+  // Load state from Firestore first (highest priority for Cloud Run), then MongoDB, then db.json fallback
   const loadState = async () => {
+    // 1. Try Firestore via firebase-admin
+    if (db) {
+      try {
+        const docRef = db.collection("states").doc("global");
+        const docSnap = await docRef.get();
+        if (docSnap.exists) {
+          console.log("📥 Successfully loaded primary state from Firestore Cloud Database!");
+          const data = docSnap.data();
+          if (data) {
+            if (data.products) products = data.products;
+            if (data.news) news = data.news;
+            if (data.jobs) jobs = data.jobs;
+            if (data.orders) orders = data.orders;
+            if (data.brands) brands = data.brands;
+            if (data.coupons) coupons = data.coupons;
+            if (data.activities) activities = data.activities;
+            if (data.footerData) footerData = data.footerData;
+            if (data.settings) settings = { ...settings, ...data.settings };
+            if (data.contacts) contacts = data.contacts;
+            
+            // Sync to local file fallback
+            try {
+              const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings, contacts };
+              fs.writeFileSync(dataFile, JSON.stringify(state, null, 2));
+            } catch (fsErr) {
+              // Ignore disk-write errors
+            }
+            return;
+          }
+        } else {
+          console.log("📝 No state found in Firestore. Creating initial state...");
+          const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings, contacts };
+          await docRef.set(state);
+        }
+      } catch (err) {
+        console.error("❌ Error loading state from Firestore:", err);
+      }
+    }
+
+    // 2. Try MongoDB Atlas if connected
     if (isMongoConnected) {
       try {
         const stateDoc = await (AppState as any).findOne({ key: "global" });
@@ -209,7 +285,7 @@ async function startServer() {
       }
     }
 
-    // Fallback to local db.json
+    // 3. Fallback to local db.json
     try {
       if (fs.existsSync(dataFile)) {
         const raw = fs.readFileSync(dataFile, "utf8");
@@ -223,6 +299,7 @@ async function startServer() {
         if (savedDb.activities) activities = savedDb.activities;
         if (savedDb.footerData) footerData = savedDb.footerData;
         if (savedDb.settings) settings = { ...settings, ...savedDb.settings };
+        if (savedDb.contacts) contacts = savedDb.contacts;
         console.log("📥 Loaded state from local db.json fallback");
       }
     } catch (e) {
@@ -234,10 +311,14 @@ async function startServer() {
 
   const saveDb = async () => {
     try {
-      const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings };
+      const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings, contacts };
       
       // 1. Save to local fallback file
-      fs.writeFileSync(dataFile, JSON.stringify(state, null, 2));
+      try {
+        fs.writeFileSync(dataFile, JSON.stringify(state, null, 2));
+      } catch (fsWriteErr) {
+        console.error("Fail writing to local db.json:", fsWriteErr);
+      }
 
       // 2. Save to temp-repo/db.json if temp-repo exists so GitHub commits capture it
       try {
@@ -250,7 +331,17 @@ async function startServer() {
         // Safe to ignore
       }
 
-      // 3. Save to MongoDB asynchronously if connected
+      // 3. Save to Firestore asynchronously
+      if (db) {
+        try {
+          await db.collection("states").doc("global").set(state);
+          console.log("💾 Successfully updated state in Firestore Cloud Database!");
+        } catch (err) {
+          console.error("❌ Error updating state in Firestore:", err);
+        }
+      }
+
+      // 4. Save to MongoDB asynchronously if connected
       if (isMongoConnected) {
         try {
           await (AppState as any).updateOne(
@@ -286,6 +377,277 @@ async function startServer() {
     footerData = { ...footerData, ...req.body };
     saveDb();
     res.json({ success: true, footerData });
+  });
+
+  // --- Contact Us Send Message Feature ---
+  // Helper to dispatch email (SMTP with standard console fallback)
+  const sendContactEmail = async (data: {
+    name: string;
+    address: string;
+    mobile: string;
+    email?: string;
+    description: string;
+    attachmentName?: string;
+    attachmentData?: string;
+  }) => {
+    const host = process.env.SMTP_HOST;
+    const port = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 587;
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+    const toEmail = process.env.CONTACT_RECEIVER_EMAIL || "paragondff@gmail.com";
+
+    console.log(`✉️ Dispatching contact email for ${data.name} to receiver: ${toEmail}`);
+
+    const mailOptions: any = {
+      from: `"Almar Inquiry Portal" <${user || "support@almargroup.com"}>`,
+      to: toEmail,
+      subject: `New Corporate Inquiry: ${data.name}`,
+      text: `
+Almar Group Corporate Contact Form Submitted:
+
+Name: ${data.name}
+Mobile: ${data.mobile}
+Address: ${data.address}
+Email: ${data.email || "Not provided"}
+
+Inquiry Message:
+------------------------------------------
+${data.description}
+------------------------------------------
+${data.attachmentName ? `Attachment: ${data.attachmentName}` : ""}
+      `,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 25px; color: #2d3748; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff;">
+          <div style="background-color: #0b1a30; padding: 15px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">ALMAR GROUP CONTACT PORTAL</h2>
+          </div>
+          <div style="padding-top: 20px;">
+            <p style="font-size: 15px; font-weight: 600; color: #0b1a30; margin-top: 0;">New Support inquiry details below:</p>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr style="background-color: #f7fafc;">
+                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #4a5568; width: 30%; border: 1px solid #edf2f7;">Full Name</td>
+                <td style="padding: 10px; font-size: 13px; color: #1a202c; border: 1px solid #edf2f7;">${data.name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #4a5568; border: 1px solid #edf2f7;">Mobile Number</td>
+                <td style="padding: 10px; font-size: 13px; color: #1a202c; border: 1px solid #edf2f7;">${data.mobile}</td>
+              </tr>
+              <tr style="background-color: #f7fafc;">
+                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #4a5568; border: 1px solid #edf2f7;">Address</td>
+                <td style="padding: 10px; font-size: 13px; color: #1a202c; border: 1px solid #edf2f7;">${data.address}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: bold; font-size: 13px; color: #4a5568; border: 1px solid #edf2f7;">Email</td>
+                <td style="padding: 10px; font-size: 13px; color: #1a202c; border: 1px solid #edf2f7;">${data.email || `<span style="color: #a0aec0; font-style: italic;">Not provided</span>`}</td>
+              </tr>
+            </table>
+
+            <div style="background-color: #f7fafc; padding: 15px; border-radius: 8px; border-left: 4px solid #edc531; margin-bottom: 20px;">
+              <h4 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 800; color: #4a5568; text-transform: uppercase; letter-spacing: 0.5px;">Message Description:</h4>
+              <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #2d3748; white-space: pre-wrap;">${data.description}</p>
+            </div>
+
+            ${data.attachmentName ? `
+              <div style="font-size: 12px; color: #718096; border-top: 1px solid #edf2f7; padding-top: 15px; display: flex; align-items: center; gap: 6px;">
+                📎 <strong>Attached:</strong> <span style="color: #4a5568;">${data.attachmentName}</span>
+              </div>
+            ` : ""}
+          </div>
+          <div style="margin-top: 25px; border-top: 1px solid #edf2f7; padding-top: 15px; text-align: center; font-size: 11px; color: #a0aec0;">
+            © ${new Date().getFullYear()} Almar Group Inc. Sent from website contact footer widget.
+          </div>
+        </div>
+      `
+    };
+
+    if (data.attachmentName && data.attachmentData) {
+      try {
+        const commaIdx = data.attachmentData.indexOf(",");
+        if (commaIdx !== -1) {
+          const base64Content = data.attachmentData.slice(commaIdx + 1);
+          mailOptions.attachments = [{
+            filename: data.attachmentName,
+            content: base64Content,
+            encoding: "base64"
+          }];
+        }
+      } catch (err) {
+        console.error("❌ Error attaching file to nodemailer:", err);
+      }
+    }
+
+    if (host && user && pass) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host,
+          port,
+          secure: port === 465,
+          auth: { user, pass }
+        });
+        await transporter.sendMail(mailOptions);
+        console.log("🚀 Nodemailer: Email sent successfully via SMTP!");
+      } catch (smtpErr) {
+        console.error("❌ SMTP Nodemailer delivery failed:", smtpErr);
+      }
+    } else {
+      console.log("⚠️ SMTP_HOST/USER/PASS configuration missing in .env. Falling back to log stream verification.");
+      console.log("📧 Simulated mail body detail:\n", mailOptions.text);
+    }
+  };
+
+  app.post("/api/contact", async (req, res) => {
+    const { name, address, mobile, email, description, attachmentName, attachmentData } = req.body;
+    
+    if (!name || !address || !mobile || !description) {
+      return res.status(400).json({ success: false, message: "Missing required fields." });
+    }
+
+    const newInquiryId = Date.now().toString();
+    const newContact = {
+      id: newInquiryId,
+      name,
+      address,
+      mobile,
+      email: email || null,
+      description,
+      attachmentName: attachmentName || null,
+      attachmentData: attachmentData || null,
+      read: false,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      // 1. Permanently store the message in Firestore
+      if (db) {
+        try {
+          await db.collection("contacts").add({
+            name,
+            address,
+            mobile,
+            email: email || null,
+            description,
+            attachmentName: attachmentName || null,
+            attachmentData: attachmentData || null,
+            read: false,
+            createdAt: FieldValue.serverTimestamp()
+          });
+          console.log("💾 Successfully logged inquiry to Firestore 'contacts' collection.");
+        } catch (dbErr) {
+          console.error("❌ Firestore failed logging inquiry:", dbErr);
+        }
+      }
+
+      // Also append to local memory array
+      contacts.unshift(newContact);
+      await saveDb();
+
+      // 2. We DO NOT send email, as requested by the user ("seta mail na asey website a akta notification asbe")
+      console.log(`✉️ Onsite notification received for: ${name}. SMTP email delivery bypassed.`);
+      
+      res.json({ success: true, message: "Your message has been sent successfully!" });
+    } catch (err: any) {
+      console.error("❌ Error handling contact message:", err);
+      res.status(500).json({ success: false, message: err.message || "Failed to process inquiry request." });
+    }
+  });
+
+  // --- Real-Time Onsite Inquiry Notifications API ---
+  app.get("/api/contacts", async (req, res) => {
+    if (db) {
+      try {
+        const snapshot = await db.collection("contacts").orderBy("createdAt", "desc").get();
+        const list = snapshot.docs.map((doc: any) => {
+          const data = doc.data();
+          const createdAtDoc = data.createdAt;
+          let createdAt = new Date().toISOString();
+          if (createdAtDoc) {
+            if (typeof createdAtDoc.toDate === "function") {
+              createdAt = createdAtDoc.toDate().toISOString();
+            } else if (createdAtDoc._seconds) {
+              createdAt = new Date(createdAtDoc._seconds * 1000).toISOString();
+            } else {
+              createdAt = createdAtDoc;
+            }
+          }
+          return {
+            id: doc.id,
+            ...data,
+            createdAt
+          };
+        });
+        return res.json(list);
+      } catch (err) {
+        console.error("Firestore contacts retrieval failed, using fallback:", err);
+      }
+    }
+    // Return sorted local contacts
+    const sorted = [...contacts].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    res.json(sorted);
+  });
+
+  app.put("/api/contacts/:id/read", async (req, res) => {
+    const { id } = req.params;
+    if (db) {
+      try {
+        // First try finding if the document ID matches directly
+        const docRef = db.collection("contacts").doc(id);
+        const docSnap = await docRef.get();
+        if (docSnap.exists) {
+          await docRef.update({ read: true });
+          console.log(`💾 Marked contact ${id} as read in Firestore`);
+          return res.json({ success: true });
+        } else {
+          // Fallback search by client-generated ID field if the firestore key is autogenerated
+          const querySnap = await db.collection("contacts").where("id", "==", id).get();
+          if (!querySnap.empty) {
+            for (const d of querySnap.docs) {
+              await d.ref.update({ read: true });
+            }
+            console.log(`💾 Marked contact with query ID ${id} as read in Firestore`);
+            return res.json({ success: true });
+          }
+        }
+      } catch (err) {
+        console.error("Firestore contacts read update failed:", err);
+      }
+    }
+    // Mark local in-memory contact as read
+    contacts = contacts.map(c => c.id === id ? { ...c, read: true } : c);
+    await saveDb();
+    res.json({ success: true });
+  });
+
+  app.delete("/api/contacts/:id", async (req, res) => {
+    const { id } = req.params;
+    if (db) {
+      try {
+        // Try deleting by document key
+        const docRef = db.collection("contacts").doc(id);
+        const docSnap = await docRef.get();
+        if (docSnap.exists) {
+          await docRef.delete();
+          console.log(`💾 Deleted contact ${id} from Firestore`);
+          return res.json({ success: true });
+        } else {
+          // Fallback search by custom ID is needed
+          const querySnap = await db.collection("contacts").where("id", "==", id).get();
+          if (!querySnap.empty) {
+            for (const d of querySnap.docs) {
+              await d.ref.delete();
+            }
+            console.log(`💾 Deleted contact field ID ${id} from Firestore`);
+            return res.json({ success: true });
+          }
+        }
+      } catch (err) {
+        console.error("Firestore contacts delete failed:", err);
+      }
+    }
+    // Delete in-memory contact
+    contacts = contacts.filter(c => c.id !== id);
+    await saveDb();
+    res.json({ success: true });
   });
 
   // Products
