@@ -29,20 +29,22 @@ async function startServer() {
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {
       try {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-        initializeApp({
+        const app = initializeApp({
           credential: cert(serviceAccount)
         });
-        db = getFirestore();
-        console.log("✅ Successfully initialized Firebase Admin with explicit service account");
+        const dbId = firebaseConfig.firestoreDatabaseId;
+        db = dbId ? getFirestore(app, dbId) : getFirestore(app);
+        console.log("✅ Successfully initialized Firebase Admin with explicit service account, DatabaseID:", dbId || "default");
       } catch (e) {
         console.error("❌ Error parsing FIREBASE_SERVICE_ACCOUNT env:", e);
       }
     } else if (firebaseConfig.projectId) {
-      initializeApp({
+      const app = initializeApp({
         projectId: firebaseConfig.projectId
       });
-      db = getFirestore();
-      console.log("✅ Successfully initialized Firebase Admin Firestore (ADC):", firebaseConfig.firestoreDatabaseId || "default");
+      const dbId = firebaseConfig.firestoreDatabaseId;
+      db = dbId ? getFirestore(app, dbId) : getFirestore(app);
+      console.log("✅ Successfully initialized Firebase Admin Firestore (ADC), DatabaseID:", dbId || "default");
     }
   } catch (error) {
     console.error("⚠️ Error initializing Firebase Admin Firestore:", error);
