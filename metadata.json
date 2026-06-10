@@ -1,0 +1,6 @@
+{
+  "name": "Almar Group",
+  "description": "Enterprise-grade MNC-style corporate website and e-commerce portal",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product in the shop",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "discountPrice": { "type": "number" },
+        "rating": { "type": "number" },
+        "isDiscount": { "type": "boolean" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "brand": { "type": "string" },
+        "stock": { "type": "number" }
+      }
+    },
+    "News": {
+      "title": "News",
+      "description": "Corporate news",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "Job": {
+      "title": "Job",
+      "description": "Job opening",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "location": { "type": "string" },
+        "type": { "type": "string" },
+        "salary": { "type": "string" },
+        "experience": { "type": "string" },
+        "date": { "type": "string" }
+      }
+    },
+    "Order": {
+        "title": "Order",
+        "description": "Customer order",
+        "type": "object",
+        "properties": {
+            "customer": { "type": "string" },
+            "date": { "type": "string" },
+            "total": { "type": "number" },
+            "status": { "type": "string" }
+        }
+    },
+    "Brand": {
+        "title": "Brand",
+        "description": "Product brand",
+        "type": "object",
+        "properties": {
+            "name": { "type": "string" },
+            "logo": { "type": "string" },
+            "status": { "type": "string" }
+        }
+    },
+    "Coupon": {
+        "title": "Coupon",
+        "description": "Discount coupon",
+        "type": "object",
+        "properties": {
+            "code": { "type": "string" },
+            "discount": { "type": "number" },
+            "type": { "type": "string" }
+        }
+    },
+    "Activity": {
+        "title": "Activity",
+        "description": "Corporate activity",
+        "type": "object",
+        "properties": {
+            "title": { "type": "string" },
+            "category": { "type": "string" },
+            "date": { "type": "string" },
+            "description": { "type": "string" },
+            "image": { "type": "string" }
+        }
+    },
+    "Footer": {
+        "title": "Footer",
+        "description": "Footer configuration",
+        "type": "object",
+        "properties": {
+            "aboutText": { "type": "string" }
+        }
+    },
+    "Settings": {
+        "title": "Settings",
+        "description": "App settings",
+        "type": "object",
+        "properties": {
+            "heroTitle": { "type": "string" },
+            "heroSubtitle": { "type": "string" }
+        }
+    }
+  },
+  "firestore": {
+    "products": { "schema": "Product", "description": "Shop products" },
+    "news": { "schema": "News", "description": "Corporate news" },
+    "jobs": { "schema": "Job", "description": "Job openings" },
+    "orders": { "schema": "Order", "description": "Customer orders" },
+    "brands": { "schema": "Brand", "description": "Product brands" },
+    "coupons": { "schema": "Coupon", "description": "Discount coupons" },
+    "activities": { "schema": "Activity", "description": "Corporate activities" },
+    "footer": { "schema": "Footer", "description": "Footer content" },
+    "settings": { "schema": "Settings", "description": "App settings" }
+  }
+}
