@@ -1,40 +1,12 @@
 import express from "express";
 import path from "path";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import fs from "fs";
-
-dotenv.config();
-
-const dataFile = path.join(process.cwd(), "db.json");
+import { createServer as createViteServer } from "vite";
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+  const PORT = 3000;
 
   app.use(express.json());
-
-  // --- MongoDB Connection Optional Setup ---
-  // Safely attempts to connect only if MONGODB_URI is provided
-  if (process.env.MONGODB_URI) {
-    try {
-      await mongoose.connect(process.env.MONGODB_URI);
-      console.log("✅ Successfully connected to MongoDB Atlas");
-    } catch (err) {
-      console.error("❌ MongoDB connection error:", err);
-      // We do not throw error here to prevent app crash
-    }
-  } else {
-    console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory data store.");
-  }
-
-  app.get("/api/db-status", (req, res) => {
-    res.json({
-        readyState: mongoose.connection.readyState,
-        statusStr: ["disconnected", "connected", "connecting", "disconnecting"][mongoose.connection.readyState] || "unknown",
-        hasUri: !!process.env.MONGODB_URI
-    });
-  });
 
   // --- API Routes (Mock Backend for Prototype) ---
   
@@ -87,10 +59,10 @@ async function startServer() {
       { id: "3", icon: "Mail", text: "contact@almargroup.com" },
     ],
     policies: [
-      { id: "1", name: "Privacy Policy", path: "/policy/privacy", content: "This is our default privacy policy. Information is kept secure." },
-      { id: "2", name: "Terms & Conditions", path: "/policy/terms", content: "These are the default terms and conditions of Almar Group." },
-      { id: "3", name: "Refund Policy", path: "/policy/refund", content: "Our default refund policy states that items can be returned within 30 days." },
-      { id: "4", name: "Sustainability", path: "/policy/sustainability", content: "We are committed to operating sustainably." },
+      { id: "1", name: "Privacy Policy", path: "/privacy" },
+      { id: "2", name: "Terms & Conditions", path: "/terms" },
+      { id: "3", name: "Refund Policy", path: "/refund" },
+      { id: "4", name: "Sustainability", path: "/sustainability" },
     ],
     socialLinks: [
       { id: "1", name: "Facebook", href: "#" },
@@ -121,14 +93,6 @@ async function startServer() {
     mission: "To innovate and lead across major industries while maintaining the highest standards of corporate responsibility.",
     vision: "Becoming the most trusted multinational conglomerate, driving prosperity in every community we touch.",
     corpImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    scrollingImages: [
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    ],
     navLinks: [
       { name: "Home", path: "/" },
       { name: "Our Brands", path: "/brands" },
@@ -140,33 +104,6 @@ async function startServer() {
     ]
   };
 
-  try {
-    if (fs.existsSync(dataFile)) {
-      const raw = fs.readFileSync(dataFile, "utf8");
-      const savedDb = JSON.parse(raw);
-      if (savedDb.products) products = savedDb.products;
-      if (savedDb.news) news = savedDb.news;
-      if (savedDb.jobs) jobs = savedDb.jobs;
-      if (savedDb.orders) orders = savedDb.orders;
-      if (savedDb.brands) brands = savedDb.brands;
-      if (savedDb.coupons) coupons = savedDb.coupons;
-      if (savedDb.activities) activities = savedDb.activities;
-      if (savedDb.footerData) footerData = savedDb.footerData;
-      if (savedDb.settings) settings = savedDb.settings;
-    }
-  } catch (e) {
-    console.error("Error loading db.json", e);
-  }
-
-  const saveDb = () => {
-    try {
-      const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings };
-      fs.writeFileSync(dataFile, JSON.stringify(state, null, 2));
-    } catch(e) {
-      console.error("Error saving db.json", e);
-    }
-  };
-
   // Helper function for sending responses
   const getById = (arr: any[], id: string) => arr.find(item => item.id === id);
 
@@ -175,7 +112,6 @@ async function startServer() {
   app.get("/api/settings", (req, res) => res.json(settings));
   app.put("/api/settings", (req, res) => {
     settings = { ...settings, ...req.body };
-    saveDb();
     res.json({ success: true, settings });
   });
 
@@ -183,7 +119,6 @@ async function startServer() {
   app.get("/api/footer", (req, res) => res.json(footerData));
   app.put("/api/footer", (req, res) => {
     footerData = { ...footerData, ...req.body };
-    saveDb();
     res.json({ success: true, footerData });
   });
 
@@ -200,17 +135,15 @@ async function startServer() {
   });
   app.post("/api/products", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    products.push(newItem); saveDb();
+    products.push(newItem);
     res.json(newItem);
   });
   app.put("/api/products/:id", (req, res) => {
     products = products.map(p => p.id === req.params.id ? { ...p, ...req.body } : p);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/products/:id", (req, res) => {
     products = products.filter(p => p.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -218,17 +151,15 @@ async function startServer() {
   app.get("/api/news", (req, res) => res.json(news));
   app.post("/api/news", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    news.push(newItem); saveDb();
+    news.push(newItem);
     res.json(newItem);
   });
   app.put("/api/news/:id", (req, res) => {
     news = news.map(n => n.id === req.params.id ? { ...n, ...req.body } : n);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/news/:id", (req, res) => {
     news = news.filter(n => n.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -236,17 +167,15 @@ async function startServer() {
   app.get("/api/jobs", (req, res) => res.json(jobs));
   app.post("/api/jobs", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    jobs.push(newItem); saveDb();
+    jobs.push(newItem);
     res.json(newItem);
   });
   app.put("/api/jobs/:id", (req, res) => {
     jobs = jobs.map(j => j.id === req.params.id ? { ...j, ...req.body } : j);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/jobs/:id", (req, res) => {
     jobs = jobs.filter(j => j.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -254,17 +183,15 @@ async function startServer() {
   app.get("/api/orders", (req, res) => res.json(orders));
   app.post("/api/orders", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    orders.push(newItem); saveDb();
+    orders.push(newItem);
     res.json(newItem);
   });
   app.put("/api/orders/:id", (req, res) => {
     orders = orders.map(o => o.id === req.params.id ? { ...o, ...req.body } : o);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/orders/:id", (req, res) => {
     orders = orders.filter(o => o.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -272,17 +199,15 @@ async function startServer() {
   app.get("/api/brands", (req, res) => res.json(brands));
   app.post("/api/brands", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    brands.push(newItem); saveDb();
+    brands.push(newItem);
     res.json(newItem);
   });
   app.put("/api/brands/:id", (req, res) => {
     brands = brands.map(b => b.id === req.params.id ? { ...b, ...req.body } : b);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/brands/:id", (req, res) => {
     brands = brands.filter(b => b.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -290,17 +215,15 @@ async function startServer() {
   app.get("/api/coupons", (req, res) => res.json(coupons));
   app.post("/api/coupons", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    coupons.push(newItem); saveDb();
+    coupons.push(newItem);
     res.json(newItem);
   });
   app.put("/api/coupons/:id", (req, res) => {
     coupons = coupons.map(c => c.id === req.params.id ? { ...c, ...req.body } : c);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/coupons/:id", (req, res) => {
     coupons = coupons.filter(c => c.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -308,17 +231,15 @@ async function startServer() {
   app.get("/api/activities", (req, res) => res.json(activities));
   app.post("/api/activities", (req, res) => {
     const newItem = { id: Date.now().toString(), ...req.body };
-    activities.push(newItem); saveDb();
+    activities.push(newItem);
     res.json(newItem);
   });
   app.put("/api/activities/:id", (req, res) => {
     activities = activities.map(a => a.id === req.params.id ? { ...a, ...req.body } : a);
-    saveDb();
     res.json({ success: true });
   });
   app.delete("/api/activities/:id", (req, res) => {
     activities = activities.filter(a => a.id !== req.params.id);
-    saveDb();
     res.json({ success: true });
   });
 
@@ -327,75 +248,15 @@ async function startServer() {
     // Mock JWT Auth response
     const { username, password } = req.body;
     if (username === "almar" && password === "12345A") {
-      saveDb();
-    res.json({ token: "mock_jwt_token_12345", user: { role: "admin", name: "Super Admin" } });
+      res.json({ token: "mock_jwt_token_12345", user: { role: "admin", name: "Super Admin" } });
     } else {
       res.status(401).json({ error: "Invalid credentials" });
     }
   });
 
-  // Dashboard stats
-  app.get("/api/dashboard", (req, res) => {
-    // Generate simple live stats from in-memory arrays
-    
-    // 1. By Goods
-    const totalInventoryStock = products.reduce((acc, p) => acc + p.stock, 0);
-    
-    // 2. Orders & Revenue
-    const activeOrders = orders.filter(o => o.status !== "Delivered" && o.status !== "Cancelled");
-    const pendingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
-    const totalRevenue = orders.reduce((acc, o) => acc + o.total, 0);
-    
-    // 3. Customers
-    // Assuming distinct customers by simple mapping of orders
-    const customerOrders = orders.reduce((acc: any, o: any) => {
-      const name = o.customer;
-      if (!acc[name]) acc[name] = { id: name, name, ordersCount: 0, totalSpent: 0, orderHistory: [] };
-      acc[name].ordersCount++;
-      acc[name].totalSpent += o.total;
-      acc[name].orderHistory.push(o);
-      return acc;
-    }, {});
-    
-    const topCustomersItems = Object.values(customerOrders)
-      .sort((a: any, b: any) => b.totalSpent - a.totalSpent)
-      .slice(0, 10)
-      .map((c: any) => ({
-        ...c,
-        totalSpent: "৳ " + c.totalSpent.toFixed(2)
-      }));
-
-    // Top Products
-    // Currently, orders don't have detailed items structurally mapped to products easily in dummy data,
-    // so we mock a top products list using real product names
-    const topProductsItems = products.slice(0, 10).map((p, i) => ({
-      name: p.name,
-      sales: `${1000 - i * 50} pcs`,
-      revenue: `৳ ${(p.price * (1000 - i * 50)).toFixed(2)}`
-    }));
-
-    const slowMovingItems = products.filter(p => p.stock > 0).slice(0, 5).map(p => ({
-      name: p.name,
-      stock: `${p.stock} pcs`,
-      lastSold: "Unknown"
-    }));
-
-    res.json({
-      inventoryStock: totalInventoryStock,
-      totalRevenue: totalRevenue,
-      activeOrders: activeOrders.length,
-      pendingOrders: pendingOrders.length,
-      topCustomers: topCustomersItems,
-      topProducts: topProductsItems,
-      slowMovingItems: slowMovingItems,
-      totalCustomers: Object.keys(customerOrders).length
-    });
-  });
-
   console.log('NODE_ENV:', process.env.NODE_ENV);
   // --- Vite Middleware for Development ---
   if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
