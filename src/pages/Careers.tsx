@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Briefcase, MapPin, Clock, DollarSign, X, CheckCircle } from "lucide-react";
 import type { Job } from "../types";
 

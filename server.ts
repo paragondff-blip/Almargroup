@@ -15,11 +15,13 @@ async function startServer() {
   app.use(express.json());
 
   // --- MongoDB Connection Optional Setup ---
+  let isMongoConnected = false;
   // Safely attempts to connect only if MONGODB_URI is provided
   if (process.env.MONGODB_URI) {
     try {
       await mongoose.connect(process.env.MONGODB_URI);
       console.log("✅ Successfully connected to MongoDB Atlas");
+      isMongoConnected = true;
     } catch (err) {
       console.error("❌ MongoDB connection error:", err);
       // We do not throw error here to prevent app crash
@@ -28,11 +30,28 @@ async function startServer() {
     console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory data store.");
   }
 
+  // Define Mongoose Schema for persistent data
+  const AppStateSchema = new mongoose.Schema({
+    key: { type: String, default: "global", unique: true },
+    products: Array,
+    news: Array,
+    jobs: Array,
+    orders: Array,
+    brands: Array,
+    coupons: Array,
+    activities: Array,
+    footerData: Object,
+    settings: Object
+  }, { minimize: false, timestamps: true });
+
+  const AppState = mongoose.models.AppState || mongoose.model("AppState", AppStateSchema);
+
   app.get("/api/db-status", (req, res) => {
     res.json({
         readyState: mongoose.connection.readyState,
         statusStr: ["disconnected", "connected", "connecting", "disconnecting"][mongoose.connection.readyState] || "unknown",
-        hasUri: !!process.env.MONGODB_URI
+        hasUri: !!process.env.MONGODB_URI,
+        isMongoConnected
     });
   });
 
@@ -143,28 +162,98 @@ async function startServer() {
     ]
   };
 
-  try {
-    if (fs.existsSync(dataFile)) {
-      const raw = fs.readFileSync(dataFile, "utf8");
-      const savedDb = JSON.parse(raw);
-      if (savedDb.products) products = savedDb.products;
-      if (savedDb.news) news = savedDb.news;
-      if (savedDb.jobs) jobs = savedDb.jobs;
-      if (savedDb.orders) orders = savedDb.orders;
-      if (savedDb.brands) brands = savedDb.brands;
-      if (savedDb.coupons) coupons = savedDb.coupons;
-      if (savedDb.activities) activities = savedDb.activities;
-      if (savedDb.footerData) footerData = savedDb.footerData;
-      if (savedDb.settings) settings = savedDb.settings;
+  // Load state from MongoDB if connected, otherwise fallback to local db.json
+  const loadState = async () => {
+    if (isMongoConnected) {
+      try {
+        const stateDoc = await (AppState as any).findOne({ key: "global" });
+        if (stateDoc) {
+          console.log("📥 Loading state from MongoDB Atlas...");
+          if (stateDoc.products) products = stateDoc.products;
+          if (stateDoc.news) news = stateDoc.news;
+          if (stateDoc.jobs) jobs = stateDoc.jobs;
+          if (stateDoc.orders) orders = stateDoc.orders;
+          if (stateDoc.brands) brands = stateDoc.brands;
+          if (stateDoc.coupons) coupons = stateDoc.coupons;
+          if (stateDoc.activities) activities = stateDoc.activities;
+          if (stateDoc.footerData) footerData = stateDoc.footerData;
+          if (stateDoc.settings) settings = stateDoc.settings;
+          return;
+        } else {
+          console.log("📝 No state found in MongoDB Atlas. Initializing with defaults...");
+          const newState = new AppState({
+            key: "global",
+            products,
+            news,
+            jobs,
+            orders,
+            brands,
+            coupons,
+            activities,
+            footerData,
+            settings
+          });
+          await newState.save();
+        }
+      } catch (err) {
+        console.error("❌ Error loading state from MongoDB:", err);
+      }
     }
-  } catch (e) {
-    console.error("Error loading db.json", e);
-  }
 
-  const saveDb = () => {
+    // Fallback to local db.json
+    try {
+      if (fs.existsSync(dataFile)) {
+        const raw = fs.readFileSync(dataFile, "utf8");
+        const savedDb = JSON.parse(raw);
+        if (savedDb.products) products = savedDb.products;
+        if (savedDb.news) news = savedDb.news;
+        if (savedDb.jobs) jobs = savedDb.jobs;
+        if (savedDb.orders) orders = savedDb.orders;
+        if (savedDb.brands) brands = savedDb.brands;
+        if (savedDb.coupons) coupons = savedDb.coupons;
+        if (savedDb.activities) activities = savedDb.activities;
+        if (savedDb.footerData) footerData = savedDb.footerData;
+        if (savedDb.settings) settings = savedDb.settings;
+        console.log("📥 Loaded state from local db.json fallback");
+      }
+    } catch (e) {
+      console.error("Error loading db.json", e);
+    }
+  };
+
+  await loadState();
+
+  const saveDb = async () => {
     try {
       const state = { products, news, jobs, orders, brands, coupons, activities, footerData, settings };
+      
+      // 1. Save to local fallback file
       fs.writeFileSync(dataFile, JSON.stringify(state, null, 2));
+
+      // 2. Save to temp-repo/db.json if temp-repo exists so GitHub commits capture it
+      try {
+        const tempRepoDir = path.join(process.cwd(), "temp-repo");
+        if (fs.existsSync(tempRepoDir)) {
+          fs.writeFileSync(path.join(tempRepoDir, "db.json"), JSON.stringify(state, null, 2));
+          console.log("💾 Also saved state to temp-repo/db.json for GitHub commit sync");
+        }
+      } catch (errSync) {
+        // Safe to ignore
+      }
+
+      // 3. Save to MongoDB asynchronously if connected
+      if (isMongoConnected) {
+        try {
+          await (AppState as any).updateOne(
+            { key: "global" },
+            { $set: state },
+            { upsert: true }
+          );
+          console.log("💾 Successfully updated state in MongoDB Atlas!");
+        } catch (err) {
+          console.error("❌ Error updating state in MongoDB:", err);
+        }
+      }
     } catch(e) {
       console.error("Error saving db.json", e);
     }

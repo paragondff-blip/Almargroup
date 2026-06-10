@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from "react";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
-import { useState, useEffect } from "react";
 
 interface Brand {
   id: string;
