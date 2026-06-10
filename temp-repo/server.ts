@@ -865,18 +865,34 @@ ${data.attachmentName ? `Attachment: ${data.attachmentName}` : ""}
     });
   });
 
-  console.log('NODE_ENV:', process.env.NODE_ENV);
+  // Render-safe robust production detection.
+  // In many production environments (like Render), NODE_ENV might not be set to "production",
+  // but if the 'dist' directory and 'index.html' exists, we are definitely running the built production app.
+  const distPath = path.join(process.cwd(), "dist");
+  const hasBuiltAssets = fs.existsSync(path.join(distPath, "index.html"));
+  const isProduction = process.env.NODE_ENV === "production" || hasBuiltAssets;
+
+  console.log('Detected Mode - isProduction:', isProduction, '| NODE_ENV:', process.env.NODE_ENV);
+
   // --- Vite Middleware for Development ---
-  if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
+  if (!isProduction) {
+    try {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+      console.log("🎮 Server running in development mode (Vite middleware active)");
+    } catch (viteErr: any) {
+      console.warn("⚠️ Failed to load Vite development middleware, falling back to static serving:", viteErr?.message || viteErr);
+      app.use(express.static(distPath));
+      app.get("*", (req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    }
   } else {
     // Static serving for production
-    const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       try {
