@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    // Admins are defined by exists /admins/uid documents
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+
+    // Default deny for all unspecified paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Admins metadata collection
+    match /admins/{uid} {
+      allow read: if isSignedIn();
+      allow write: if false; // Only manageable through Firebase Console or Admin SDK
+    }
+
+    // Public configurations & application elements
+    match /products/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /news/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /jobs/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /brands/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /coupons/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /activities/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /footer/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /settings/{id} { allow read: if true; allow write: if isAdmin(); }
+    
+    // States configuration (used by fullstack server)
+    match /states/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Contact messages form entries (creates are public, reading restricted to admins)
+    match /contacts/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // User/Customer Orders
+    match /orders/{id} {
+      allow create: if true;
+      allow read: if true; // Allows order lookup or tracking
+      allow update, delete: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Almar Premium Desk",
+      "price": 299,
+      "discountPrice": 249,
+      "rating": 4.8,
+      "isDiscount": true,
+      "image": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "category": "Furniture",
+      "brand": "Almar Home",
+      "stock": 10
+    },
+    {
+      "id": "2",
+      "name": "Corporate Chair Alpha",
+      "price": 199,
+      "isDiscount": false,
+      "rating": 4.5,
+      "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "category": "Furniture",
+      "brand": "Almar Workspace",
+      "stock": 5
+    },
+    {
+      "id": "3",
+      "name": "Almar Steel Tumbler",
+      "price": 29,
+      "discountPrice": 19,
+      "rating": 4.9,
+      "isDiscount": true,
+      "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "category": "Accessories",
+      "brand": "Almar Lifestyle",
+      "stock": 0
+    }
+  ],
+  "news": [
+    {
+      "id": "1",
+      "title": "Almar Group Expands to Southeast Asia",
+      "date": "2026-05-15",
+      "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "description": "In a monumental move, Almar Group announces its expansion into 5 new countries."
+    },
+    {
+      "id": "2",
+      "title": "Annual Corporate Sustainability Report",
+      "date": "2026-04-22",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "description": "Committing to a greener future with 100% renewable energy goals by 2030."
+    }
+  ],
+  "jobs": [
+    {
+      "id": "2",
+      "title": "Production Supervisor",
+      "department": "Production",
+      "location": "Manufacturing Hub",
+      "type": "Full-Time",
+      "salary": "BDT 20k-25k",
+      "experience": "3+ Years",
+      "date": "Closes Jul 15, 2026"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-001",
+      "customer": "John Doe",
+      "date": "2026-06-08",
+      "total": 249,
+      "status": "Processing"
+    },
+    {
+      "id": "ORD-002",
+      "customer": "Jane Smith",
+      "date": "2026-06-07",
+      "total": 49,
+      "status": "Shipped"
+    }
+  ],
+  "brands": [
+    {
+      "id": "1",
+      "name": "Almar Home",
+      "logo": "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "status": "Active"
+    },
+    {
+      "id": "2",
+      "name": "Almar Workspace",
+      "logo": "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+      "status": "Active"
+    }
+  ],
+  "coupons": [
+    {
+      "id": "1",
+      "code": "ALMAR10",
+      "discount": 10,
+      "type": "percentage"
+    }
+  ],
+  "activities": [
+    {
+      "id": "1",
+      "title": "Global Expansion Strategy",
+      "category": "Sales & Marketing",
+      "date": "2026-06-01",
+      "description": "Driving global reach through strategic market penetration.",
+      "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "2",
+      "title": "Sustainability Initiative Q3",
+      "category": "Promotion",
+      "date": "2026-05-20",
+      "description": "Building strong brand equity through sustainability initiatives.",
+      "image": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    }
+  ],
+  "footerData": {
+    "aboutText": "Empowering global growth through innovative solutions and enterprise management across multifaceted industries.",
+    "contactInfo": [
+      {
+        "id": "1",
+        "icon": "MapPin",
+        "text": "Near Dhaka Cantonment, Dhaka 1212"
+      },
+      {
+        "id": "2",
+        "icon": "Phone",
+        "text": "+880 1717150036"
+      },
+      {
+        "id": "3",
+        "icon": "Mail",
+        "text": "contact@almargroup.com"
+      }
+    ],
+    "policies": [
+      {
+        "id": "1",
+        "name": "Privacy Policy",
+        "path": "/policy/privacy",
+        "content": "This is our default privacy policy. Information is kept secure."
+      },
+      {
+        "id": "2",
+        "name": "Terms & Conditions",
+        "path": "/policy/terms",
+        "content": "These are the default terms and conditions of Almar Group."
+      },
+      {
+        "id": "3",
+        "name": "Refund Policy",
+        "path": "/policy/refund",
+        "content": "Our default refund policy states that items can be returned within 30 days."
+      },
+      {
+        "id": "4",
+        "name": "Sustainability",
+        "path": "/policy/sustainability",
+        "content": "We are committed to operating sustainably."
+      }
+    ],
+    "socialLinks": [
+      {
+        "id": "1",
+        "name": "Facebook",
+        "href": "#"
+      },
+      {
+        "id": "2",
+        "name": "Linkedin",
+        "href": "#"
+      },
+      {
+        "id": "3",
+        "name": "Twitter",
+        "href": "#"
+      },
+      {
+        "id": "4",
+        "name": "Instagram",
+        "href": "#"
+      },
+      {
+        "id": "5",
+        "name": "Youtube",
+        "href": "#"
+      }
+    ]
+  },
+  "settings": {
+    "companyName": "Almar Group",
+    "tagline": "Grocery & Daily Needs",
+    "seoDescription": "Enterprise-grade MNC-style corporate website...",
+    "mainLogo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAMAAAD0WI85AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADAFBMVEX1+vT3/PX0/Pb3+/T3/Pb1+vP3/vf////2/vL4/fj3/PP0+fT0/fP6/PX8/vj2/vX+//zz+vL+/vb4/vD///r1/vb0/vPz+/X7/ff6//Tz/PQfVYP0/e/0/fEZRGT7///4/vYfU4H2+/P2+/f8//v//vr2//skVYL5/PPz/PIVSHT7//gaUH0kWIL5//oWSnojVoYZTHby+fIbUHq+zNAiVn36+/P2/PoeWIX4/vMYTXwfUX5siZ4iU377/vP0+/ESRHD2+fHo8O8QP2iEwV35+/YZR21Gaob9/fr5+/VphZdWm3dOcooeU4YjUHeLn6rd5ONzsGEkXYrr9vPz++5hgpjJ0NMdTnVhpm6IxVh0kaPh5+keU3ttrmpafJPw9e9tjJ7y+PUhWobV5eZ5tWIzW3zBz9N6uWHb4eFdanZbd44hS23T3+CCm6iVzGCt3GmUsbf4/O71+PcbRGyHkZkdSXPY6Oc3Y4GQy1il1WcmRGEdQGVEjYArTWjL2Nvn7uoQO2GkucPR2ttboXVytGZMlHyeq7MtZ46lsLhIWWYyTWn1//BQXmvs+fbm8/GDvV1jcHo5cIpsf46a0Fuvwsu5xcqDjJPx/vV2hI6Sx2Lj7O3a3NmMxl9Xb4Y8lrzy9fOao6oweqFAX3mtu8AyUmwdUIM6hIIsSGTe7eygtL58kqEPM1gwVnXA26ZmqWgeTXwmYorm9OsyeIZ5ipSCl6Pf6ORTZXCUqbZtd4TF1Nezx83g783M1Ne4ytG8ztLm89y918fK39+utrpGi3G4v8O0z6PCzs88i7B+vWFOlXJPbYbE2d6RmqSTuZMxP1JUlGGjwMhljJk0dm3T5rUoPVuht8Fkc4WEsHcscJYzhKs/hHOgxIFHUl7CycxpnmaQyFSevq2424iozYZ2nKqdzmrw+uJ3o4iSv2ylvpZmoXeGpK+RpbF3qVZxpT87TF2ow6Jrq3DZ6Mw9h6eTtcP6+fVbomlxp7XI45xSkaxjnlmy3HhNgJFSa3gIITzN4Mr0+vsX91YpAAAFXmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI2LTA2LTEwPC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkRhdGE+eyZxdW90O2RvYyZxdW90OzomcXVvdDtEQUhNSS1mZUhHSSZxdW90OywmcXVvdDt1c2VyJnF1b3Q7OiZxdW90O1VBRUlNNjFUdzdzJnF1b3Q7LCZxdW90O2JyYW5kJnF1b3Q7OiZxdW90O0FMTElTT04gSEFMTCYjMzk7cyBDbGFzcyZxdW90O308L0F0dHJpYjpEYXRhPgogICAgIDxBdHRyaWI6RXh0SWQ+MjExYzNkYjUtNWJhMC00ZWY1LThkNTQtNDE3MWQ4NGYzOWY0PC9BdHRyaWI6RXh0SWQ+CiAgICAgPEF0dHJpYjpGYklkPjUyNTI2NTkxNDE3OTU4MDwvQXR0cmliOkZiSWQ+CiAgICAgPEF0dHJpYjpUb3VjaFR5cGU+MjwvQXR0cmliOlRvdWNoVHlwZT4KICAgIDwvcmRmOmxpPgogICA8L3JkZjpTZXE+CiAgPC9BdHRyaWI6QWRzPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpkYz0naHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8nPgogIDxkYzp0aXRsZT4KICAgPHJkZjpBbHQ+CiAgICA8cmRmOmxpIHhtbDpsYW5nPSd4LWRlZmF1bHQnPlVudGl0bGVkIGRlc2lnbiAtIDE8L3JkZjpsaT4KICAgPC9yZGY6QWx0PgogIDwvZGM6dGl0bGU+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOnBkZj0naHR0cDovL25zLmFkb2JlLmNvbS9wZGYvMS4zLyc+CiAgPHBkZjpBdXRob3I+TmFoaWQgSG9zc2FpbjwvcGRmOkF1dGhvcj4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6eG1wPSdodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvJz4KICA8eG1wOkNyZWF0b3JUb29sPkNhbnZhIGRvYz1EQUhNSS1mZUhHSSB1c2VyPVVBRUlNNjFUdzdzIGJyYW5kPUFMTElTT04gSEFMTCYjMzk7cyBDbGFzczwveG1wOkNyZWF0b3JUb29sPgogPC9yZGY6RGVzY3JpcHRpb24+CjwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9J3InPz5LUQLiAAAATmVYSWZNTQAqAAAACAAEARoABQAAAAEAAAA+ARsABQAAAAEAAABGASgAAwAAAAEAAgAAAhMAAwAAAAEAAQAAAAAAAAAAAGAAAAABAAAAYAAAAAF3Bd/nAAAgAElEQVR4AZV8CWBTVbp/tuYmtzdNmt40aRaapGnTNN1rgbS26SKlIIU6FFBaKBTLjkMpRQWlgMgO8hAo4jAgiywiiAgIMrghbrjvC+LoqOPyHH2D/p2/s7zfd26SJqUU39f23nPOPffe73e+5XxnuZVZdDqlSqtVqVRyXk6EFEipVMpk9CeTmRkpWJryfVJcN7F63VmW6vPe7otKZZrEDs+rVHqQPEErp/OVSea06EK8MxghINFcuyUg3a/pKxXFOKsWlf/tSOJlISB8BIg/gQHqA0iCRRsSSEQaJJAoZt2Mogp6TcZJpVGMswIpHx8fLqfCuFBdKpXu6nGMRx4SwS8vdyshD73cmSC3xqJQxGZlCRanU6vVyuW8Mk3JtKoHDjw0np7ck+JjS8Oc4hxfGF9Z2Z1HthtIqBglUYU9H428xAoBcfN6tVqutbiFbs4Fq1mhiNW1EBBIw+2GXeB+/FEi+uGxLANXjwJZXBRXISARGcQVEpDuLK4T0fMZKpYLl4TeGh/PgDCJuK0ExGKxRknEalUoLpcI5AGBQIZEsUDY+7rNnr1GenHojaFTL0B6SOT/DgTWSlbr5q16JCzaGCAKRRQsJikZbB0+C/bOcETAhCRCSLovSKlYDOFcN+No8uhMz3RIAj2Le5iLMuxESVWABzx2a1ZvKZnFQiiY4wpzzEAxBsMl4TOzIWTC3EedYxhzx+Ti3NH5/zMQkov8ajj0AMIqEothdq9whu4RXvj4tF6QxLLeZ05yg5dViWoVMvZQt8a4c8u1cmuUsfciEpkzQavSsdryKwAIF+P9Uj051Yx5LTKxfPW8ChXtxdNG3dPjBthq+F16JNww9isikQDK/AlahgN9DzgNM63sToWK8GBUiZAkPnc3d1FMIdmDLxl5rp5l0eCjr5FZMh0mKHoBpHc6ExKU0f4XIiHHRaQPATGWl0vKRcDdvesXShEyxBCrSP2mUimx2DeQHl3RZXYSDQR1KUSRZMKUSO2ERJTww1EkRIBIhTIjSMtDWRifqpAXhkRIj5Skzkol+lhGUjBGSYQOrIQE95uAxHIK+RSCur1bzOVCcpQRNUbHrtUqdZYh5hggeqtE4e6EAdHRXaSLxKGkSiGDYKoUsQ2CJblDdLkhYtVDehOSSgxXlCEBxBTGSiTmEmUIR/ilvCCQ79XBRnr05aR0ULsQyRJAcrkT2WjO6ElhVmFqEWJAIrlwhBk2/SsAYTFKD24Zst7q4wK1jdRmeJNVEHgJCBCFue7lLNNZLBanNgpIFJuhZKT1pTyBCRcxo1SpQlz2xlgPADHZ3up3A5HeEQWkh0Ri0FghEb/fiaA/ooCxQGJqI+ihPLSPJ4mHCGBi2IvJQFhheUFlZLEaFlOTZUhQJBD4EtZYPK/oEgS1WqVNkOOFsdxE56zoEBMIiDoSAYT5k85UORzlqEGUFQR4PfRP4ZrEaagTIm6IkQiBI+bgpAKmUJexL5VSDeawWNXIwIoB0ethI30CQc+uszCJgENe0PMRUwlxKQEhTwDGgQPmpdCn6BUC3y0RasAQ+9T8UvQcUjp2klAQozFAw4hCYiDA5HmZPLqBCHqyDZKItQ+J6GV+rTbBIleptXLmBAS9Kqz/DIoe6gQyCbxDo9GrVLn+lKQvfvxCq1YLYR9AvEIgZJ5uyMMtB0PUIzFi/qAbCCBLXalUJMVgslDdyDUpz/hQ6U340edC/3t6LWrjbpJRp9lfqTSpTQqFW6ZwWBW81RpWmnA9QXD4ZAO0CQkNTz7x1v/78+1vpfN6RbgSXks4oNTklOEKSL+7W4Muh4lFaxFYSoolQCSCCFFV1h2y22C8DAi4lIOrMD/hTiSS1+tlmZbaWmOSJpBZHlB7Enirg1dYw1ygy4E28bw1OEinSfpCAnH7739/71sGGHvYRhgPSnfoJomxMOchBx1hE+JIS4vkQrUi+R4JgqRUmMh6mbG7LwMS8VAAUm6pLf/xYYneetJenobbWGPz7D4Bpm3V+su/IEn8/98zuv3in2vdsUBIEgwJBBIKEmK4jGQYMimHJpcEF8V/qB4bVcgp2NCaBPK6DEgU26FuPVoiAUv6W199ddMf/nAf6KPnnkjR6tVp1MPDV8GVJcM9xaAAlHsv/rmNYtHwW9k5bDExhVImSs96uXrFIopiYbsUF2JWwSn3dbNtDUpIuksgEWPSZxdvueW2+26577b7Lt730Y+5Kr2WRZRqp1quNmmNX5Asbv/97US/J8W6997PKrXdErkiJ6ELNKy6Wp1er+utiRCCCsw4MRaPYrq3JIAYP7rn3ttCdMvFj55MAXQBDhbmodZa2p54+M+/v/0WcH/7vQzL7RcJiBNVoE+9MtCjkOy5R9Fvyirl1kRIg2boUn4DkARL6r+/+29G3910y8WLX332hVyjl2OeAm2QmfLkw3++/S8Q1i1/ufcvDMi9Fy/edvGzhlwnaXs0izE9ELUZcRs6ogsA8exIqVA5S17xoKTAVqGnQS5JRAP33wfJ/E6L+ONfJXrvutsufvXVjx6FnicT4CGOP392C5TuFolIKhcZkMoEAElT4RAx7e6YBayZTLgfvYlVgmNivSf0OsS1QCZ8ZZKMSikHG5JEAlo5fzUgAV6rS+cYpR/77p6bLt7zHNk7+nBeJz7x2S033QRHQK6AsNx78aabLuLvs0IMkBEMaSlkMVkZm9CBbtYgCT0CGTgMKoOvpvGAlbeityFCFMF8HMuEDlHSjQCRgjuYrFyON0VC9t4EIwvItXr9kCH9L13qX8k999833XTPZ20JeifucxuffO6+6yQCktu++uov9wEW6LrPAhA2HK7KhF7XlGyimTEkQCGu8FbBlKzHU0gD6cU4IfaLXFYzWcZhgoUVYd4wiiLVKLijP0TyTn3PKblYOOjZgRZVhwzRCOKT39103XVfPVHrIxa0Xzx33z33MCD3XPeHe2746OGPrvvDTdcByJTncuVOj8FgQWhGNdUExK1QCMAlDdCUbrMgaMh/sy5Ba1IolQhrSNcl/wNeoZSQgtQ5IMMjTgJexAiYmSOFJSEiCfx6QZOJoW7fEiEPjap6uc6pM/b/CIxPeThBARYCmoe/uufmF+554QWgeeG79x5+66t7/gBpXHfTdTc8bOif8fTijev8mZngixo6TubUVcLLUtuD3JV6axBtqYLCEVNCnC4QJ9fTpCbJTi4PyrXK/qRe1BB6q0yVIA8iQUjcJpMsfggu8ZnKoNksQCYAors6EC2aCo/WWcp13HPfXffClI8a1OpcrfjERzcTTZlyz1c3f/e3L966eUpIz15Y+kSq/+nnf3n+57UpOh2xIgiejJFrU2sxoJOsQuPpykgFBwxIGs8npyqQF4hpRoIhowsClVMjwpqcqeaRAzxSi1uFLnlCakaqRIZcgcIkTWY5xd99kCxTNwjCU6t0Oq1TJR77bsqUm997Ilev1XF/u/kG/Nz83pSb//HKEcVzN0x5YQrJ54Xrbr557YCMv//xj398/mmx3II2V83Jnfn5+FEjpqbHKUxpClV/Z9fiUWOnegbgEoYRernFvHjohF0jLTxMSi9XWN3WM2NHjej0D0IrqLV8YN3s8dPHnsnFFHuaQu9rME06MZbowNhZiycNyr3EazMxHrkKECcWqwiIE6sLqtyG926YsvSGhzNUmf4jr4y7AbR0yqFPzgWb/3rDlBC98MKhv5pqJ/4MIB+8nFLuVGnlOvHpgxUledUvjawdpEpTyJWGv9d0VGxbpwYQGk3oUr9ZUFBUM9aK9Scwrg3mnlhQ0VF97QAdhkDwKhnTq7OKxsx4PddH01TBlH23VmcVdGTlZWVVZLVOaDQo8QrLkKvYiCQtITk5mee1Kv9z/1i6dOlHDRaN+NR7N4wbN+6Gpf/45N/+I3+7YQrTMshrypR/POUxPA0cf/yfI8ZyZ0ogkMmNrRjoctXlzTYoEeopg6mjsnLq2k+LiM+hdkpL1+Asr9dbs9GQiHhBKxdnekts3qJVW1PaBI2GT51cUNKUXXd42Egepq9J5E7VlJWVel22/Pz8uj0d2ybBtSRg7a1v1YLLRAVBQ0CcqtR//2PpuHHvHRN54ZVDgDFu3GvvdRqefGXpOOBbCixLb1760ydP+rnFH0Czfu4qD+gDgmCsat1TV2erK7l1XXl/jOfdGaPy8vMXjDYACI0sE9YOy/OWebPGm9sUkH1/7kBeTllx9t55/qTkJA1vGJrnOlzq2nP4GkMQrCRyiwtyykrbH1pUXZ3XUueqGTax3KmFakltfoWjLKA3hee40BPUdr53aOm4T/4tqo68d+jQuB+WvvYKn/HkKzdCNhDODQAz5dBrf82Vm39+HgJ5PZUPBPg2n2Fx9R7bcFe+q/2UeGmQPnNQKoAMXDCaU2DAqdcrU0a+VOItK3ONWSYW6k2JxoUHXbbiHNeqejFJs9rnb2wt8R7uqNtTMdboM2nlcdw7HTk57ePfWbFixPF+3rKimoXGTLmu59JbD0CygBNA8EIitV7pf+WTcT/89NfVhh+/vvHQoR8+eaUw9cgrPx364dA4CIikMu6n1370qOf9Qpo1KUMIBJLsmpHTS/JLWlv32LKGKnQ6tVOXOp4BMcB3guTlawdDlcq8w4+PNLXZG0yj2r1lxTl1q+rTM3VCYeqJdpetdfBhV0nrVA/iDBn3TntOzqJvREstN2d8h9dVcYJTOnUYGdHDrkQyC6xVJYeRweLVJrfhqU9+OPTTe0e4p1776cYbX3ulcFDzpzfeeOMhQgUJjRv307OfcmkZr3/wwR8/+CVRQ6FHpeGa9rr86hMbKnJcwxeKbU4tDyBeG1TLjKAPfWT5yMEFtuJiV13Ft4Y2q3/h8LyysiZb3apGI5xeV+fgDm/eu7vaS+uqT3CVWp2S299R3NJvBFd5qZLbWF3cUjKBy9Rn0gCpD5JhKh7SVyioU1SbrJYjX98Fxv/NPffiTze+9mVzruJvX6OEygjLDze++PW+9P4Zn3/w/B8fmO1pAA5lnOdAtS17xtZNNTYbWGlTCwSkDjbCMSBOeebIwXk2m6usqaB1q3HIgKGHS4ePgabtbUzXWRSGUwsOl7bv53bm5ee9tLac17rF/TXe4n6zuMpBhcY/1RTnlEwwKDHF0ycOvQxdLYuF1Horj7BMmfDlazfeeP3fUj997a4XXzuW4Xv9+uvvuktCAhG9+OKHT3kuefb98vzzzz9w0khAeP+knYfzK6aJ22/Ns+Xt3GpUaJIyoFoMCN5ucg4BENgIMd/xrcF4qqOseEZTaVP2nfV+XqvQXttRNmZ3I3e0vaV0+EaRL3eL7xTkFC96jMtMWZ0ya0yOtwbCwQzUVSRC0Q+UKiw0t+G567++68Uv1a9cf9ezT4ldT7149/UMCkPz7LNv/pWrHMK9/MDzz3/wy5EkB2w9kTvR7s2vWWEUH2v3utpPiGlCGwEhYzfTY7XKTBi7rah1ekex6+AS9bbD+TXjR+XBa01y2n2e08Pzc9qni8YL7fmurKFiW3l/joDUfLN15qSZ384oLc6ZcY1YGUAQ16dIZDR/EwVEr+38+vq7rv/6KaD5VFTv+/KOu+8mKATmeuCYnRsn92X8/YMP/ueB2en2ZAAJ5o6vKBtz67oh4un5pfl503MhJDL2sEQAxEmq5T04urWgpWLExgWltn6bRuXllO6d5G9o4JZVtOR3bBQrK6fnFZfsPmbMzOQWZ3mLvYNvbW1tHd5UnFOxc44F3lG4ikQgEAISlgkmgL58Fmx/ef2LX/8nfcDsZ58lJMBy9/V33PHhm592JSqFQNWvH3zwwftnUu3JmiS38cxBW071Y4badG5URX7pnSc9fGbGdCYR0YxASa9yA0hJju37reerc7Jbd3Y0Vb/LbStpsUG17D7zS9X5eYMHcRZu2aLi0n4jxIY29CPFxbCh0uGHy7w5/Q6eNCj5gMbaY30krEOhMyaxEZpIQADZak3k/vbs9cT4s09x3Mk7JAKSZ+948M0PT6WqBN4tLnwfQH5d53EkawJxhqN5LflNny/e/87GsXl1rqwDHj6QKgGhjhze1+2E+82x3Tk1fnBBdkFHyZj5o7lteehHGo1uw8aOPWUVw3Yt3r/4m+FFpQU716ll1CEWe4d3jPGi26wZ2mjgA85AAIPFvghriBaMrNQkN8Kht4oznyURPDu7a8C+Nx58kCF58MEHH33zzW+OiQFerRriWfz+Aw+8/4vWyQNIytaD2YgmSgsKSsaU7nG5SnbuS+EzxpfYBi44zSXSbHKAVCvbZlt1P7fioaaiorJFWwzKbVk21+5GMdNwbV5p0549hw8fHl7nRZTT7xQnAZmxc/q23XU53hmnuMpMFalWXzAwQef362gYGQai1ge2382QzPNkvP7oo4AgoXjzjae6/HFOi9xS2/UzAfm7wSeYAm7P/naXq9iW7/Xm0K/L1b7fECQg+e2jPYXmxPhgQzAFEvHaVk01jhycNdBVMn+JeGlbljd7VaNfrD+4x+byeuu83nw8w2XLGjUg07C4w1u8aJYhd3FHvm1M6xJjf619dd8wGBAMEaVaEEdQrfZxn34Ic/g0wzPv10dD9OAbX57sys2w6p0Wvc4w71cAWb4kJWjVay0jh3W4vGP6tdfUdNTU1Awv8xa8tD0zFyGKrX0JV8txBo7TOte+xFTLaLjmobymhx7jhiRsy/MW3TnPL47Iq7O52vvhVtCYgTbXwZOi+E6WN2fRCE5m2NDuLa6ZnmFRrf4tQPzakF8jxdLrgwknP7z7jg8nGTNm/9ejgx999M1HP3/96YkGj85qSpZrE3TobZdDIL8GFQjQreLkjlLX4Z0r9s9+5539+2cfbCq27T3FGQDE27Hi1EbQ65uqPBPJRlZNNcgsj7390Pq1ukGwEW/2nY3iVsQ1A2tm7Z9N9M5L2S35FbMApCA/Bz17YcbMOzu83pIRBqXm6kCwhOh0RpwWdIx3Vt1xx4M/r07Z9+vy5YuPzKsq7MrwWPS8OoFsyaKrTP18+fsPvH/CE+dUdSWLE/LyXf2WpbK2r+UO1Hjzs0aJBvTs3uysrAJQVvuoOQBis+2uN1gFz8wl8QGFPH364fyiO+u5FdWu4qxhHmkWh7tmRk5xwcF6bvHh/N9VjzC0VXIrFrQA8BIx2OecFikUeS0AidJA9AKzH/zwqVTDsuJHfm0uT2pra6usDPK0EM3H9df1L9/6wPL333/kDNcfI4SUqa11A/fsri8vtPt8voaUhXfaBrYMX8KhH7G56gba6mzIzzidMTg7P3/VVI+gsacY7VY1Xzt9D7zWMW56RZ23+h2xuTIYDDZUbh9ckJMzYxf3TmlOTvUsQ5vOc2nY4RxX3liDJtB3EA8gCFEAhGw9RLzP8PSbD+5TdI0qavpcDKQYjf5yvz/Fz0g0igMmPLJ8+fLBR/yZTr3ZP3Vv3p5F25yZvAbjkrZg6rZFdYcXLOG+WVRSUrKH6PDhklVTuenVdXmrOlPMqzV2u0Yu2MUN6D0OVnGonrWqM9OdqcEALMidf8jlWvAMt2vR4bKHlnGDEnSG0/Nryqqne3wB59W8FmMfc4BhHHrenrLvzc9TM+YNHtjyy9MzJ8XQvHkzZz3yyPL3m74xuNU6lTCE2zH/7d0LRbkWgZogdxvq1yx4G51j85ZX997JaO/e+ec5w+jv589/xgCz0gsOh1WwG0+vWvD2t6ncpr0z9u4SE7EelswrrRr+3fl7t1WlNL/79tvbqhJqEyyXxBXz+606J6In6TuK18uwMhjBICWsfOobsxMMkwcOfKSl9dbly/8LxA6UGPY+yeOR3U/70aNosTaVWr+wSvQhEmJkTti+ZFK5JY7Xdh47dqwedGzesTTBnVs1s95olWswZYjBrUbTYKxaONNiMtd23t+YjoUYFGJ636qLnzRzu99ePmfmkmaPRevU6nhx65J9RqUzcNWgkd7fLQ7KKfjap85y3MaigbaBAwe24Lfld4+0/A70CAgwli9v358a5DG/qBKS5X7RaGarFTS7qOctBg92Kvh80MQUpo8eo9InBMtFf4NCALcUC2nsbUG90RgnKMyBlPI43o0rBETuzhSNSXxAnun380oLTYJpfaihzET8Fq01xGYPkqmj7SN0Ub2902k4WTOwuMzmzfcCiAQDSIBl+fL84SMwkaMRMEdi15TzhZXowFlfBDXmaUaY3KBcIfigSsIQDOJJBIWoJDiEYGJcom+1XdDwsiCvh2Fh2p9WYTW+IFmJEntKUxCPYP4AszpOp06r12AZFvmrAkHM2AMbWhaFvHrbQ9l16G9tNJmRn09gWvLzf5e/p3r3bG4IZkfAMy+YtAnwnQmY3ISJ8BpM7zhVeDvm7ORJPmQw8ecMODT2BM7AqzAtQbWxAIlVYsEujHS70wS7U+7gnXwth9s9uXg5zT2qEQkpseKkiufVJrsdLYTx0mV8RhfIdKrLgegFn9XsrNqyav7bRK+++vbb80F75+9dNX/vmhFbOaXVRHPjQrJGWVu1/7Ed9RY+6EtOlDvjeGdmeXmcblCCJW3AIJlW78Mkk5MP+pfMXfYfLR/nnzxixIhNKl2lLtcX6Jy29ex5Lp7nkxDpTN3kCarPzkyv9CfEZfKBlP6X5Gaee2YuIq3VDnB8dSBaFfxB2GtFfJxccBi5zqlT74+lqffXX0q3tLXZ9WoCIrQZG79/49SW9dvnpM4p5CaO5LRqQ9VEbhDXuZ2TJ6auXavwqVQTVSlVK89uWcYlxnFD//npsvXT5ohzqgbkTryQu+Lx1Im8dmKzm9v1r/1c6vEVXG3VdkNl7YDOWsMgQxW3bBsK1ubKICJrMFoAl6WxrKCi0IQIVh/Z3CVXmBJruUu1nIj9XOnpOIiiyDrg8kp4fewdwKMEfRy3ZahH9I807Jg2rXPZmjVbJs7ZvPLjHamb16zcwe2YdnTEeU/q5me4zOY1G7ecTQ8GucfncrW1Hy9bsubx4/fnbuh85uiOuZzn8V0ct2vn9+e4aSs4dufUacfXT+V2fL/hpfHclvXHz9JQM9zWl0GQCmQaWtviqR6AYPIf60REgjUt4+Wx08fPHmmMCwTcQbe7rf+AkxNGXbt/u3GQVjCpMfEG0y5vXvmy2Lb9Arfl1fo/rTxdv/Lssu+P7Xpm8cpJk9dUbfj42MI1c/Z9PFW8xG3419z0TowHAaSZO/9u84V1649yx+dtfGzJ8YzGaZ2q1BVHl736n2m7Tq2cOXlN/eNzRz529P5Xz66b9u7UlZOmHvMEfWyxnLHW+0EWyIRtEuPWIBaCAUSqZw16FrZW52VVTEjDKggPM840vOytwHTsgQG4QVJBwZE0Z+U1BmPnq42bz3NHD3DcivNHl4HtA/+cu3na/QeWcdz6Hbs2G7Zzc+cuXP/N3NVrucfPc8ht7twy99313Latp45y7z4zYi5XyO3fwD2+ftuuWYPnzp32zM7Nm7ds3rElnVvxLnd02uOnxaB1SC+mHA0J4xEMrOAZreZETIabzWwJEgLy5W6otpU22fpdI7J1M2mCN9vlmnHaoIS/JMUShERxxMqttY0AcoB75vsqbv2K89O4+vt3HN9XP5p7fAeXfnbvtIWeoPzjZdwz/3qdm8hteYzbfuHVJZuPcufXc9MaN21JP/vxytNGM7fice7SP/+1adfHjY2n5xxftnZ044WPq7h316Q2bt88jQsqQnxF8x6TxnZZS4Ke9t1gsyP7viIIfcSMLV/4UlZ+cbGtepnRXY4VU12me3BeXZnLtWg/F9Qk4yHoAHi+LfWxj9esOcptHsEZ5q5cM62qatrxj8+LW45Pm8tt3gGrf3wbl+hLvrBy/eNzjzZbuFkr/7kSOr9pzebjR1PXN248YOA2DOV4M/fMBk/5ujVnIYBpm9NHr9+w8kLt3JXv/vNo/Zr1a87WJlp9XegUolmn/fFReZkWCyM0pRUBYmZAHHbt4IqWpibbohWGSoC1DOHTgKy01LZol0EKqvEchyDoUidNflqb3lmVkMadvrDdopl47rSuvP/p0c3qzk7T1Pp3d3E+R4Oh8UK9p7NQp6uauWTJPkNlxszRVVXaY4VH9jUuOb5QzFStPrLP0ZZa1ezXnr7QzOdWnbtf61YvPD1y64DGc/cnBM0AgvXJKMal7bLdBTJjAtacYEkEUPp2x6zAyp3QIC6rzs/JObyq3o9d0ZiOVHI7FuXke7Mw0uYFM2wdQHxBk6/SyCFeSXEmC0oxlbfb9YZcNa8VOeMQv2nAjo/nmtv4pCReFI1tzmSHEPCLKUkNPiHXgI1LamF16vmV59N5uVpIDvABdOe8xiAm2XmL6NH73GLK6mSH05Brt/P6qwKxWDAZ6bZaQyDopFBg25tpyJwDDz300Ko/GYJYI8REvZC7fQMKdm/ilHq5GRaCaQ3oFmIkwaExOXisS/h8Dk2yhsJbPbbk6AK8zzrRI8fWI5BGE9CsTkY93AL74tFTYhoUPiQ+HTuA1Lig02XyWKdRujE5w7t9CATiEt1WIRg0+6wqNDJCiW4BQIN6qJaxnNeb+WgcBESlGiST/efC5vNTa91s+Igm02sHbdq8o5FjMUTokQ7qdCmcDRMrx+INCNyDWQciRaRTUCu2pnQHrgVRF8GWAImwyBhxjuQUVSqIXS5XyK3gR+mORnF5WmbUaS4Hgt38g5S+NmwkqA3yNOuFNhT0gf7oEo1ote7HOLCvLkLJyZEkWCckPNaPUBmQcIxcjEkwxBRWoiq7P4BNQXAjuAGRpM+HMoeDJrDx2xfJdDoHbJ3v1ix4YbPMDCB2u2/OJWsyphhoyR8bALTatv5tmarQYgp7Kt4htSIY4TETrEkWGMMMCACgEukVCIlITeKZCLEaqRqEQjho+U8jOOLiICDeinjPbm+z2x0YUtodPuwg7wsGhrpGHfDyWM+WKBEbchTmRIVyEMYawCB0ddHiHKAiTJTzAcFnVlJrhQnxgNVKHMITm9eadWOoi1EAAAoISURBVG70LshppPYnlEkgTRKVSQpDd5q6upJXrwZoCiis0qyuYAXPPsEvGgpHyn2CwmE3mc063mfC91QO+9UnHyQgiYlhJLAQAmJOUyEutwaxmQFv7ZLkimax+oRQECNBgUsMAclcO3TY9Kf9aEpiugf5YCoYlofhw0EwiWB3HgEJFQt2uye16sznux9L9fkEn+nbYcNOePy7Xho2wkeBfN8kM2ZCIu4IEOaDE+MoWIFVYNQAgXR1hRdZ8F6flfbIgCLP5ZlEhPIjOXkVp7BIFWUMMCFJ9TBOgaFF7sG+ArZFRQIS1n6hofxP01sPHpw+OcW+2iFkjK+oGCWKB6oLBhcGyEb7JJnf4rMq3BF5mM3ARPpFWz+x1E83d7cZ5ciPEFGakTROFcpH3mor+BOG7/ROaTsQlL13lUC/BKK7SSLSY3BfQ+7clScWNhs86I7svoxRtF5inJVlG1Zo17HVqHDNXs7Y9xvs7gqjDIVtao28L+pOUj2ibjSCxpGY6Esa+Uh2FoBIrGPfWhSrxC6zphDXbCOB1MRRDS3YG0YqDH5NYSLGY0F7xqjsilGcOKugeFhluU4XbZlR7IST2HjmRtgbQhA6MYnQ3moV280crktnNF+oEgPCGl9Avy26IZFsSKTHnKAEIfpITwGQXlqY9zUEDNisbHAGBSsDkjWUgNiGNZeX6yKCowdcTvigkjfHqBbjE1xSi9KW6tgIB08IgyYkAKJx6Edec2ryxJR1DIiPxsnd74mGEErj4hWANOTOOzF2woHZkzx2PujArgMA8T9W0DSsOVN3VSD4nMxKAolIRaEgD8baGwerzEy6HOKBlfcAog/6T+4e2Pq0cd2tdZKNROEI3xiNh1D2NF244OAQPGhYwRisswxbkpLo00C1soYajLPyBg5rTspURT+VHtGDZJi2gY0wIg6RwMAkiqBmuIUYwbIqKw97OFTFFRqTTJ5hG/MygGSPgWr1eMFvy2JYF+Q1614qaZlx5/CWgmFVSb5kCYhnVp4LqkX7wvokmQDvSjC62U8ERSGBVIKJQeDQI3wDsS6TbqC7AFHBgAxfCCAuspHLX9ez+S+vgccEfb7UxQUtBxfX7x+eM+N1LhgCIs7Kg41kZvY22RP9IBl6OwBhDMaZzfThHb7iisIBfjF4BBKoXAgfIWBAzGbYkdknjp4xcPhJcd2tTZCIrwfbvJtiQGpPMjqQCrtu5NgREUP4iEAIiuOzijZgZWhUUc0BDGIyhpJq1UrGbqGNd30RAcF2UKn3MKnYNynx8QAicUt7IphLC4OIhsg8tNLdYBg9pqXspAivVXTKE6RIJGwSPDZjxQVh/SBCIzcH3QgE7Q6BDgg48YulBixJCI6gbs4/S8ecSGg2jCgoGGogr1UEYzfMKoGNlF8dCMVsZmbfGBqGvzGKBhLNemxaAmJmQIoXktcqgmo5HLw7aPfZfaT2Vp87jhccdpS5eV/QkZxstyc7fA3o8KKpAWFhYv/mwU1NJ8Rm8dvhJdNzK9syRh2W3O9vA0IbOhVupjRuNL4M37KE/82DWxFOxQII5yQgcQ2e0cNbcl42Hrm1JOsbTp2bm5uBsN+EwZI6IyMDB4Rrpgyk6QzK6KINgQhZUEuNPBJ0kzp3450Di8ZrOcOEMU2tL4vi2vGuCupHIJGGcpU2MuXWu4LJMIhClCkR06LwB0M441MiZt/h61Fn0rwQkCC8FgHpGlzQ0jr0jaHXRtEbEyZE5aTkhDfeuPYNlsTFCSCkJ2AH44Rbi5taWiecmHDQW1w8bOyBUTm/q5jFGWeNGTi9GbuTsfu0dwhSqUwygSgWpe8f2SeQ4DQu2oFF1SLTkYDwPuNkrP0tFLlvFzQVZ5eUZDdlh6ioqCm7CIdSUHY2HYqK8NuExXYc8ZNNl0spV1Ta5LIVtA632YqGNxU0jXEdHlPakrVzn0U8UJAzrFmDXbZsSvCKWGSw5phxrjlWIlG8dydh+SGJmJXuuEQAseUsEWW53+ye369fvxr8XYV6r7J7w7xZq/r1W7R3w8KhOPeb/9LJ1DnciAXV2zA3boH3uyIKXJDBwzC3FGKTBBRikj7Ek2G4eDlRRyOpllnWX9XAbZpha92XK/CeqoXnzl1zDX4ZnQmdo09nzpw5d+Ycfs+cmzz5DGqck2jy5Gsm79OliFs3rdg11S9aGq/ZuGmJ3hk0q9YtPFcfcPidoQ3OVwIDIDHKFeoMEWpBMviWrvtiOEUwiaxWchP8yCPmeaOyBw4zYxWgQW8wiKLBgN3mEoUTCCrpCshvFP34oQxNi6MUNSkhih6/O5iYQBd4mc6PqinBBoc1TuUXy4O8M1cIXkUigNjd6omJ1BtK0S+AwILC3SBSUudPIEBmsxvRcZzxT4NHDS4lqwxivob3kWLiftYezLwimhofHwwmJjY0MPeB0srKRLpG34rGy7B4h74EE0sY7HaZacctnuDD1IpVrkgLos9R5+JDzitJg8pl+BO6lQf8QW2o98PzEfiCY8qwUlYcqZoYB2NXxRn+Xg0jXrRza4oviDfRkIoGsV1dPnZOZoNJdgCnViEZvWBokIvRYfdFpIgbzEVg1RcTGpj1Yt+j0LZhPMjnUzuvMo1CQCICwcAwwiglWDQplRQmmmXxOHRTIoAoguLGBQsW7R7a6EmkD7goqsWEBevY6RsR6UMQFplgnQ4PR6jNVgMxXoZpWvFJCYhVZxfQqD5pIA1c1IoYttBKsDXu6itW6JX0sNxuBq+YgozC10JeS6Vy+AYsOXuh06Nz0/RxiCTGaVYCFC4Ej2gysB4iUs9wOnJ2K0xCGhGFiALrN2iwDJB4TNSjuh8aSckICEw7zOIVzoAAHBEgqKXEb9ogK63QpVuCNItAz5QwKJVDhmDSiPHH3sSKISsz5mYlYr4xnOk+0z89GkSUxmJEdNakc3g4NCwaSHRQz5SS2QiiFLDVF7lhmrDK+ChnTM6ZpoySfWZ6C7hmLNOXuBAwQCvpC0JpjiLyeS45jyjpx+bAAH2VSaNH1SB2xEGyHWtQ44iZApFaBt9ZYrnt/wLEbEZYTEihgpJcFGa3mQ3pmUrDo4Q+bQYO0m2prsQ19pRHKJZ11IuCRUDgr+grrNDHujSPw8gcp9FcBgSaNABAQlVkarQkpoi7x1XEQ18UGlhZyf1iSC+jj7xIjdkb8TUYgMTeTh+u0ef5RLF8x9Zz46tnPFCqGJKIhAPDLo1GEa1aUDfISgUg7J8joJoMH91EgHTrao+UtEdDKoQzYwQboQ/Uh2C2HOv/9H+iVFgfRllPIGYFq0g2FgaCB1wGCVfxyDAQ3CJhwSdXvFXALHfMJn/SOCteCCAURDMg+CyJJBIiyR9d9pbw5ZgzXuZWprnJv0AIMBnp38JcBoQQSxTROknpYp5GRhdNIZmgYdzWZIcmLHPGtXRQKLTaXBUvZf4X/YIUZP5fI48AAAAASUVORK5CYII=",
+    "favicon": "",
+    "heroCover": "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+    "heroTitle": " ",
+    "heroSubtitle": "A diversified conglomerate committed to excellence, innovation, and sustainable growth across multiple industries.",
+    "aboutImage": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "stats": [
+      {
+        "label": "Years Experience",
+        "value": 25,
+        "suffix": "+"
+      },
+      {
+        "label": "Global Employees",
+        "value": 10,
+        "suffix": "k+"
+      },
+      {
+        "label": "Active Brands",
+        "value": 15,
+        "suffix": ""
+      },
+      {
+        "label": "Countries",
+        "value": 32,
+        "suffix": ""
+      }
+    ],
+    "aboutTitle": "SHAPING THE FUTURE OF GLOBAL COMMERCE",
+    "aboutDesc": "A diversified conglomerate committed to excellence, innovation, and sustainable growth across multiple industries.",
+    "corpTitle": "Shaping the Future of Global Enterprise",
+    "corpDesc": "At Almar Group, we vision a future where enterprise solutions drive sustainable growth. With over two decades of excellence, we have built an ecosystem of brands that deliver unparalleled value to our consumers worldwide.",
+    "mission": "To innovate and lead across major industries while maintaining the highest standards of corporate responsibility.",
+    "vision": "Becoming the most trusted multinational conglomerate, driving prosperity in every community we touch.",
+    "corpImage": "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "corpProfileTag": "Corporate Profile",
+    "globalTeamLabel": "Global Team",
+    "globalTeamSublabel": "10,000+ experts",
+    "globalTeamAvatars": [
+      "https://i.pravatar.cc/100?img=12",
+      "https://i.pravatar.cc/100?img=24",
+      "https://i.pravatar.cc/100?img=36",
+      "https://i.pravatar.cc/100?img=48"
+    ],
+    "scrollingImages": [
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+    ],
+    "navLinks": [
+      {
+        "name": "Home",
+        "path": "/"
+      },
+      {
+        "name": "Our Brands",
+        "path": "/brands"
+      },
+      {
+        "name": "Activities",
+        "path": "/activities"
+      },
+      {
+        "name": "News & Events",
+        "path": "/news"
+      },
+      {
+        "name": "Shop",
+        "path": "/shop"
+      },
+      {
+        "name": "Career",
+        "path": "/career"
+      },
+      {
+        "name": "About Us",
+        "path": "/about"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "id": "1781072599083",
+      "name": "vbfbdfbd",
+      "address": "fgfhgfhbfvgfghfdh",
+      "mobile": "23526565614",
+      "email": null,
+      "description": "jjoujuuuuiui",
+      "attachmentName": null,
+      "attachmentData": null,
+      "read": true,
+      "createdAt": "2026-06-10T06:23:19.083Z"
+    }
+  ]
+}
