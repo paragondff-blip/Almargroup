@@ -931,9 +931,13 @@ ${data.attachmentName ? `Attachment: ${data.attachmentName}` : ""}
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
+
+  // Solve Render 502 Bad Gateway / connection resets / persistent connection timeouts
+  server.keepAliveTimeout = 120000;
+  server.headersTimeout = 120500;
 }
 
 startServer();
