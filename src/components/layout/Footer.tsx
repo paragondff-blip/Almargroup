@@ -45,17 +45,28 @@ export default function Footer() {
           
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              {settings?.mainLogo ? (
-                 <>
-                   <img src={settings.mainLogo} alt="Logo" className="w-auto h-10 object-contain bg-white rounded p-1" />
-                   <span className="text-2xl font-black tracking-tighter uppercase text-white">{settings.corpTitle ? settings.corpTitle.split(' ')[0] : 'Almar'}<span className="text-secondary">{settings.corpTitle ? settings.corpTitle.split(' ').slice(1).join(' ') : 'Group'}</span></span>
-                 </>
-              ) : (
-                 <>
-                   <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary font-bold text-2xl italic">A</div>
-                   <span className="text-2xl font-black tracking-tighter uppercase text-white">Almar<span className="text-secondary">Group</span></span>
-                 </>
-              )}
+              {(() => {
+                const companyNameStr = settings?.companyName || "Almar Group";
+                const firstWord = companyNameStr.split(' ')[0];
+                const remainingWords = companyNameStr.split(' ').slice(1).join(' ');
+                return settings?.mainLogo ? (
+                  <>
+                    <img src={settings.mainLogo} alt="Logo" className="w-auto h-10 object-contain bg-white rounded p-1" />
+                    <span className="text-2xl font-black tracking-tighter uppercase text-white">
+                      {firstWord}
+                      {remainingWords && <span className="text-secondary"> {remainingWords}</span>}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary font-bold text-2xl italic">{firstWord ? firstWord[0] : 'A'}</div>
+                    <span className="text-2xl font-black tracking-tighter uppercase text-white">
+                      {firstWord}
+                      {remainingWords && <span className="text-secondary"> {remainingWords}</span>}
+                    </span>
+                  </>
+                );
+              })()}
             </Link>
             <p className="text-blue-100 mb-6 max-w-sm">
               {footer.aboutText}
@@ -109,8 +120,8 @@ export default function Footer() {
              <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-secondary"></span>
                 <span className="text-[10px] font-bold text-white uppercase tracking-wider text-center">Payment Gateways Enabled</span>
-             </div>
-             <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider italic">© {new Date().getFullYear()} Almar Group. All Rights Reserved.</p>
+              </div>
+             <p className="text-white/40 text-[10px] font-bold uppercase tracking-wider italic">© {new Date().getFullYear()} {settings?.companyName || "Almar Group"}. All Rights Reserved.</p>
           </div>
         </div>
       </div>

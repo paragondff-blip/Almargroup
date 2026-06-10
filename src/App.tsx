@@ -35,9 +35,8 @@ export default function App() {
     fetch("/api/settings")
       .then(res => res.json())
       .then(data => {
-        if (data.corpTitle) {
-           document.title = data.corpTitle;
-        }
+        const siteTitle = data.companyName ? `${data.companyName}${data.tagline ? ` | ${data.tagline}` : ""}` : (data.corpTitle || "Almar Group");
+        document.title = siteTitle;
         if (data.mainLogo) {
            let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
            if (!link) {

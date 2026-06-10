@@ -102,6 +102,9 @@ async function startServer() {
   };
 
   let settings = {
+    companyName: "Almar Group",
+    tagline: "Empowering global growth",
+    seoDescription: "Enterprise-grade MNC-style corporate website...",
     mainLogo: "",
     favicon: "",
     heroCover: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",

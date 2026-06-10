@@ -53,17 +53,28 @@ export default function Navbar() {
             to="/"
             className="flex items-center gap-3"
           >
-            {settings?.mainLogo ? (
-               <>
-                 <img src={settings.mainLogo} alt="Logo" className="w-auto h-10 object-contain" />
-                 <span className="text-2xl font-black tracking-tighter uppercase text-primary">{settings.corpTitle ? settings.corpTitle.split(' ')[0] : 'Almar'}<span className="text-secondary">{settings.corpTitle ? settings.corpTitle.split(' ').slice(1).join(' ') : 'Group'}</span></span>
-               </>
-            ) : (
-               <>
-                 <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-2xl italic">A</div>
-                 <span className="text-2xl font-black tracking-tighter uppercase text-primary">Almar<span className="text-secondary">Group</span></span>
-               </>
-            )}
+            {(() => {
+              const companyNameStr = settings?.companyName || "Almar Group";
+              const firstWord = companyNameStr.split(' ')[0];
+              const remainingWords = companyNameStr.split(' ').slice(1).join(' ');
+              return settings?.mainLogo ? (
+                <>
+                  <img src={settings.mainLogo} alt="Logo" className="w-auto h-10 object-contain" />
+                  <span className="text-2xl font-black tracking-tighter uppercase text-primary">
+                    {firstWord}
+                    {remainingWords && <span className="text-secondary"> {remainingWords}</span>}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-2xl italic">{firstWord ? firstWord[0] : 'A'}</div>
+                  <span className="text-2xl font-black tracking-tighter uppercase text-primary">
+                    {firstWord}
+                    {remainingWords && <span className="text-secondary"> {remainingWords}</span>}
+                  </span>
+                </>
+              );
+            })()}
           </Link>
 
           {/* Desktop Nav */}

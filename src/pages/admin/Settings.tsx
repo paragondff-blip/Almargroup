@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Save, Plus, Trash2, Image as ImageIcon, Type, Link as LinkIcon, Settings2, ShieldCheck, PenTool, CheckCircle, Upload } from "lucide-react";
 
 export default function Settings() {
@@ -34,6 +34,19 @@ export default function Settings() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSettings({ ...settings, [fieldName]: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleScrollImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newImages = [...(settings.scrollingImages || [])];
+        newImages[index] = reader.result as string;
+        setSettings({ ...settings, scrollingImages: newImages });
       };
       reader.readAsDataURL(file);
     }
@@ -103,15 +116,30 @@ export default function Settings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Company Name</label>
-                    <input type="text" defaultValue="Almar Group" className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none" />
+                    <input 
+                      type="text" 
+                      value={settings.companyName || ""} 
+                      onChange={(e) => setSettings({ ...settings, companyName: e.target.value })} 
+                      className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none font-medium" 
+                    />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Tagline</label>
-                    <input type="text" defaultValue="Empowering global growth" className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none" />
+                    <input 
+                      type="text" 
+                      value={settings.tagline || ""} 
+                      onChange={(e) => setSettings({ ...settings, tagline: e.target.value })} 
+                      className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none font-medium" 
+                    />
                   </div>
                   <div className="md:col-span-2">
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">SEO Meta Description</label>
-                    <textarea rows={3} defaultValue="Enterprise-grade MNC-style corporate website..." className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none" />
+                    <textarea 
+                      rows={3} 
+                      value={settings.seoDescription || ""} 
+                      onChange={(e) => setSettings({ ...settings, seoDescription: e.target.value })} 
+                      className="w-full border border-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-primary/20 outline-none font-medium" 
+                    />
                   </div>
                 </div>
               </div>
@@ -262,46 +290,113 @@ export default function Settings() {
                         <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Corporate Section Title</label>
                         <input type="text" value={settings.corpTitle || ""} onChange={(e) => setSettings({...settings, corpTitle: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
                     </div>
-                    <div className="md:col-span-2 grid grid-cols-2 gap-6">
-                        <div>
-                           <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">About Image URL</label>
-                           <input type="text" value={settings.aboutImage || ""} onChange={(e) => setSettings({...settings, aboutImage: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
-                           {settings.aboutImage && <img src={settings.aboutImage} alt="About" className="mt-2 h-20 w-auto rounded" />}
+                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="border border-gray-100 bg-gray-50/30 p-4 rounded-xl">
+                           <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">About Section Image</label>
+                           <span className="block text-[8px] text-gray-400 font-bold uppercase tracking-wide mb-3">Optimal: 1200x800px Landscape (JPG/PNG, Max 1MB)</span>
+                           <div className="flex gap-2">
+                              <input 
+                                type="text" 
+                                value={settings.aboutImage || ""} 
+                                onChange={(e) => setSettings({...settings, aboutImage: e.target.value})} 
+                                className="flex-1 border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:border-primary bg-white" 
+                                placeholder="Paste image URL here"
+                              />
+                              <label className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest flex items-center gap-1 cursor-pointer transition-colors shrink-0">
+                                 <Upload className="h-4 w-4" /> Upload
+                                 <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFileUpload(e, 'aboutImage')} />
+                              </label>
+                           </div>
+                           {settings.aboutImage && (
+                             <div className="mt-3 relative rounded-lg overflow-hidden border border-gray-100 max-w-xs aspect-video bg-gray-100 shadow-sm">
+                               <img src={settings.aboutImage} alt="About preview" className="w-full h-full object-cover" />
+                             </div>
+                           )}
                         </div>
-                        <div>
-                           <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Corporate Image URL</label>
-                           <input type="text" value={settings.corpImage || ""} onChange={(e) => setSettings({...settings, corpImage: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
-                           {settings.corpImage && <img src={settings.corpImage} alt="Corp" className="mt-2 h-20 w-auto rounded" />}
+                        <div className="border border-gray-100 bg-gray-50/30 p-4 rounded-xl">
+                           <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Corporate Section Image</label>
+                           <span className="block text-[8px] text-gray-400 font-bold uppercase tracking-wide mb-3">Optimal: 1200x800px Landscape (JPG/PNG, Max 1MB)</span>
+                           <div className="flex gap-2">
+                              <input 
+                                type="text" 
+                                value={settings.corpImage || ""} 
+                                onChange={(e) => setSettings({...settings, corpImage: e.target.value})} 
+                                className="flex-1 border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:border-primary bg-white" 
+                                placeholder="Paste image URL here"
+                              />
+                              <label className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest flex items-center gap-1 cursor-pointer transition-colors shrink-0">
+                                 <Upload className="h-4 w-4" /> Upload
+                                 <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFileUpload(e, 'corpImage')} />
+                              </label>
+                           </div>
+                           {settings.corpImage && (
+                             <div className="mt-3 relative rounded-lg overflow-hidden border border-gray-100 max-w-xs aspect-video bg-gray-100 shadow-sm">
+                               <img src={settings.corpImage} alt="Corp preview" className="w-full h-full object-cover" />
+                             </div>
+                           )}
                         </div>
                     </div>
                     <div>
                         <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Mission</label>
-                        <textarea rows={2} value={settings.mission || ""} onChange={(e) => setSettings({...settings, mission: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
+                        <textarea rows={2} value={settings.mission || ""} onChange={(e) => setSettings({...settings, mission: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none font-medium" />
                     </div>
                     <div>
                         <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Vision</label>
-                        <textarea rows={2} value={settings.vision || ""} onChange={(e) => setSettings({...settings, vision: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
+                        <textarea rows={2} value={settings.vision || ""} onChange={(e) => setSettings({...settings, vision: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none font-medium" />
                     </div>
                 </div>
               </div>
               <div className="pt-6 border-t border-gray-100">
-                <h3 className="text-lg font-black text-primary uppercase tracking-tighter mb-4">Scrolling Strip Images</h3>
-                <div className="space-y-3">
+                <div className="mb-4">
+                  <h3 className="text-lg font-black text-primary uppercase tracking-tighter">Scrolling Strip Images</h3>
+                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-1">Suggested Dimensions: 400x150px or 400x100px (Transparent png/Logo format, Max 500KB)</p>
+                </div>
+                <div className="space-y-4">
                    {(settings.scrollingImages || []).map((imgUrl: string, idx: number) => (
-                     <div key={idx} className="flex gap-2 items-center">
-                        {imgUrl && <img src={imgUrl} className="w-12 h-12 object-cover rounded shadow-sm bg-gray-100" />}
-                        <input value={imgUrl} onChange={e => {
-                          const newImages = [...settings.scrollingImages];
-                          newImages[idx] = e.target.value;
-                          setSettings({...settings, scrollingImages: newImages});
-                        }} className="flex-1 border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:border-primary w-full" placeholder="Image URL" />
-                        <button onClick={() => {
-                          const newImages = settings.scrollingImages.filter((_: any, i: number) => i !== idx);
-                          setSettings({...settings, scrollingImages: newImages});
-                        }} className="text-red-500 hover:bg-red-50 p-2 rounded transition-colors"><Trash2 className="h-4 w-4"/></button>
+                     <div key={idx} className="flex gap-4 items-center bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div className="w-16 h-16 bg-white overflow-hidden rounded-lg border border-gray-200 flex-shrink-0 flex items-center justify-center p-1 shadow-inner">
+                          {imgUrl ? (
+                            <img src={imgUrl} className="w-full h-full object-contain" />
+                          ) : (
+                            <ImageIcon className="h-6 w-6 text-gray-300" />
+                          )}
+                        </div>
+                        <div className="flex-1 space-y-1">
+                          <label className="block text-[9px] font-semibold text-gray-400 uppercase tracking-normal">Image URL or Upload Base64</label>
+                          <div className="flex gap-2">
+                            <input 
+                              value={imgUrl} 
+                              onChange={e => {
+                                const newImages = [...settings.scrollingImages];
+                                newImages[idx] = e.target.value;
+                                setSettings({...settings, scrollingImages: newImages});
+                              }} 
+                              className="flex-1 border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:border-primary w-full bg-white font-medium" 
+                              placeholder="https://... or upload local image" 
+                            />
+                            <label className="bg-primary hover:bg-primary/95 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1 cursor-pointer transition-colors shrink-0">
+                               <Upload className="h-3.5 w-3.5" /> Upload
+                               <input type="file" accept="image/*" className="hidden" onChange={(e) => handleScrollImageUpload(e, idx)} />
+                            </label>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => {
+                            const newImages = settings.scrollingImages.filter((_: any, i: number) => i !== idx);
+                            setSettings({...settings, scrollingImages: newImages});
+                          }} 
+                          className="text-red-500 hover:bg-red-50 p-2.5 rounded-lg transition-colors shrink-0 border border-transparent hover:border-red-100"
+                        >
+                          <Trash2 className="h-4 w-4"/>
+                        </button>
                      </div>
                    ))}
-                   <button onClick={() => setSettings({...settings, scrollingImages: [...(settings.scrollingImages || []), ""]})} className="text-primary font-bold flex items-center gap-2 mt-4 hover:bg-primary/5 px-3 py-2 rounded transition-colors"><Plus className="h-4 w-4"/> Add Image URL</button>
+                   <button 
+                     onClick={() => setSettings({...settings, scrollingImages: [...(settings.scrollingImages || []), ""]})} 
+                     className="text-primary hover:text-primary-dark font-black flex items-center gap-2 mt-4 hover:bg-primary/5 px-4 py-2.5 rounded-lg border-2 border-dashed border-primary/25 text-[10px] uppercase tracking-widest transition-all"
+                   >
+                     <Plus className="h-4 w-4"/> Add Image to Strip
+                   </button>
                 </div>
               </div>
             </div>
