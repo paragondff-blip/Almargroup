@@ -50,19 +50,6 @@ async function startServer() {
 
   // --- MongoDB Connection Optional Setup ---
   let isMongoConnected = false;
-  // Safely attempts to connect only if MONGODB_URI is provided
-  if (process.env.MONGODB_URI) {
-    try {
-      await mongoose.connect(process.env.MONGODB_URI);
-      console.log("✅ Successfully connected to MongoDB Atlas");
-      isMongoConnected = true;
-    } catch (err) {
-      console.error("❌ MongoDB connection error:", err);
-      // We do not throw error here to prevent app crash
-    }
-  } else {
-    console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory/Firestore data store.");
-  }
 
   // Define Mongoose Schema for persistent data
   const AppStateSchema = new mongoose.Schema({
@@ -307,7 +294,30 @@ async function startServer() {
     }
   };
 
-  await loadState();
+  const initDbAndState = async () => {
+    // Connect to MongoDB if MONGODB_URI is provided
+    if (process.env.MONGODB_URI) {
+      try {
+        console.log("🔌 Connecting to MongoDB Atlas (background)...");
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log("✅ Successfully connected to MongoDB Atlas");
+        isMongoConnected = true;
+      } catch (err) {
+        console.error("❌ MongoDB connection error:", err);
+      }
+    } else {
+      console.log("⚠️ No MONGODB_URI found. Defaulting to in-memory/Firestore data store.");
+    }
+    // Load state from Firestore, MongoDB, or local json file (background)
+    await loadState();
+  };
+
+  // Run database connection and state loading in the background (non-blocking)
+  initDbAndState().then(() => {
+    console.log("✨ Non-blocking database and state loading completed!");
+  }).catch(err => {
+    console.error("⚠️ Background initialization error:", err);
+  });
 
   const saveDb = async () => {
     try {
