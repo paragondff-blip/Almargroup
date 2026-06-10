@@ -143,6 +143,15 @@ async function startServer() {
     mission: "To innovate and lead across major industries while maintaining the highest standards of corporate responsibility.",
     vision: "Becoming the most trusted multinational conglomerate, driving prosperity in every community we touch.",
     corpImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    corpProfileTag: "Corporate Profile",
+    globalTeamLabel: "Global Team",
+    globalTeamSublabel: "10,000+ experts",
+    globalTeamAvatars: [
+      "https://i.pravatar.cc/100?img=12",
+      "https://i.pravatar.cc/100?img=24",
+      "https://i.pravatar.cc/100?img=36",
+      "https://i.pravatar.cc/100?img=48"
+    ],
     scrollingImages: [
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
@@ -177,7 +186,7 @@ async function startServer() {
           if (stateDoc.coupons) coupons = stateDoc.coupons;
           if (stateDoc.activities) activities = stateDoc.activities;
           if (stateDoc.footerData) footerData = stateDoc.footerData;
-          if (stateDoc.settings) settings = stateDoc.settings;
+          if (stateDoc.settings) settings = { ...settings, ...stateDoc.settings };
           return;
         } else {
           console.log("📝 No state found in MongoDB Atlas. Initializing with defaults...");
@@ -213,7 +222,7 @@ async function startServer() {
         if (savedDb.coupons) coupons = savedDb.coupons;
         if (savedDb.activities) activities = savedDb.activities;
         if (savedDb.footerData) footerData = savedDb.footerData;
-        if (savedDb.settings) settings = savedDb.settings;
+        if (savedDb.settings) settings = { ...settings, ...savedDb.settings };
         console.log("📥 Loaded state from local db.json fallback");
       }
     } catch (e) {
@@ -498,7 +507,37 @@ async function startServer() {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      try {
+        const indexPath = path.join(distPath, "index.html");
+        if (fs.existsSync(indexPath)) {
+          let html = fs.readFileSync(indexPath, "utf8");
+          const companyNameStr = settings.companyName || "Almar Group";
+          const taglineStr = settings.tagline || "Empowering Global Growth";
+          const descStr = settings.aboutDesc || "A diversified conglomerate committed to excellence, innovation, and sustainable growth across multiple industries.";
+          const titleStr = `${companyNameStr} | ${taglineStr}`;
+          
+          // Replace title tag
+          html = html.replace(/<title>.*?<\/title>/, `<title>${titleStr}</title>`);
+          
+          // Inject/replace Og / Open graph and standard meta tags to match custom settings
+          const metaTags = `
+    <!-- Dynamic Metatags -->
+    <meta name="description" content="${descStr.replace(/"/g, '&quot;')}" />
+    <meta property="og:title" content="${titleStr.replace(/"/g, '&quot;')}" />
+    <meta property="og:description" content="${descStr.replace(/"/g, '&quot;')}" />
+    <meta property="og:site_name" content="${companyNameStr.replace(/"/g, '&quot;')}" />
+    <meta name="twitter:title" content="${titleStr.replace(/"/g, '&quot;')}" />
+    <meta name="twitter:description" content="${descStr.replace(/"/g, '&quot;')}" />
+          `;
+          
+          html = html.replace("</head>", `${metaTags}\n  </head>`);
+          res.send(html);
+        } else {
+          res.sendFile(indexPath);
+        }
+      } catch (err) {
+        res.sendFile(path.join(distPath, "index.html"));
+      }
     });
   }
 

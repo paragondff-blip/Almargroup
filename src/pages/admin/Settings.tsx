@@ -52,6 +52,19 @@ export default function Settings() {
     }
   };
 
+  const handleTeamAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newAvatars = [...(settings.globalTeamAvatars || ["", "", "", ""])];
+        newAvatars[index] = reader.result as string;
+        setSettings({ ...settings, globalTeamAvatars: newAvatars });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const promptForImageUrl = (fieldName: string) => {
     const url = prompt("Enter Image URL:");
     if (url) {
@@ -290,6 +303,14 @@ export default function Settings() {
                         <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Corporate Section Title</label>
                         <input type="text" value={settings.corpTitle || ""} onChange={(e) => setSettings({...settings, corpTitle: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
                     </div>
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Corporate Profile Tag/Badge</label>
+                        <input type="text" value={settings.corpProfileTag || ""} onChange={(e) => setSettings({...settings, corpProfileTag: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" placeholder="e.g. Corporate Profile" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Corporate Section Description</label>
+                        <textarea rows={3} value={settings.corpDesc || ""} onChange={(e) => setSettings({...settings, corpDesc: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none font-medium" />
+                    </div>
                     <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="border border-gray-100 bg-gray-50/30 p-4 rounded-xl">
                            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">About Section Image</label>
@@ -343,6 +364,53 @@ export default function Settings() {
                     <div>
                         <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Vision</label>
                         <textarea rows={2} value={settings.vision || ""} onChange={(e) => setSettings({...settings, vision: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none font-medium" />
+                    </div>
+                    <div className="md:col-span-2 border-t border-gray-100 pt-6">
+                        <h4 className="text-sm font-black text-primary uppercase tracking-tighter mb-4">Global Team Widget Settings</h4>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Global Team Title</label>
+                                <input type="text" value={settings.globalTeamLabel || "Global Team"} onChange={(e) => setSettings({...settings, globalTeamLabel: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Global Team Sublabel</label>
+                                <input type="text" value={settings.globalTeamSublabel || "10,000+ experts"} onChange={(e) => setSettings({...settings, globalTeamSublabel: e.target.value})} className="w-full border border-gray-200 rounded-lg p-3 focus:outline-none" />
+                            </div>
+                        </div>
+
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Team Member Avatars (4 images)</label>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in">
+                            {[0, 1, 2, 3].map((idx) => {
+                                const avatars = settings.globalTeamAvatars || ["", "", "", ""];
+                                const avatarSrc = avatars[idx] || `https://i.pravatar.cc/100?img=${idx + 12}`;
+                                return (
+                                    <div key={idx} className="border border-gray-150 p-3 rounded-lg bg-gray-50/50 flex flex-col items-center">
+                                        <div className="w-12 h-12 rounded-full overflow-hidden mb-2 border border-gray-150 shadow-inner bg-white">
+                                            <img src={avatarSrc} alt={`Avatar ${idx + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                        </div>
+                                        <span className="text-[8px] text-gray-400 font-bold uppercase mb-2">Avatar #{idx + 1}</span>
+                                        <div className="flex flex-col gap-1.5 w-full">
+                                            <input 
+                                                type="text" 
+                                                value={avatars[idx] || ""} 
+                                                onChange={(e) => {
+                                                    const updated = [...avatars];
+                                                    updated[idx] = e.target.value;
+                                                    setSettings({...settings, globalTeamAvatars: updated});
+                                                }}
+                                                className="w-full border border-gray-200 rounded-md p-1.5 text-[9px] focus:outline-none focus:border-primary bg-white font-medium" 
+                                                placeholder="Paste URL"
+                                            />
+                                            <label className="bg-primary hover:bg-primary/95 text-white py-1 rounded-md text-[8px] font-bold uppercase tracking-widest text-center cursor-pointer block transition-all shadow-sm">
+                                                Upload
+                                                <input type="file" accept="image/*" className="hidden" onChange={(e) => handleTeamAvatarUpload(e, idx)} />
+                                            </label>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
               </div>
